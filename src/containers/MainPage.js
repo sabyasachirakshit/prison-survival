@@ -1,12 +1,12 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect} from 'react'
 import '../styles/MainPage.css'
 import { isMobile } from 'react-device-detect';
 
 function MainPage() {
-    const [profiles, setProfiles] = useState([]);
+    // const [profiles, setProfiles] = useState([]);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5000/api/profiles')
+        fetch('http://192.168.0.103:5000/api/profiles')
           .then((response) => response.json())
           .then((data) => console.log(data))
           .catch((error) => console.error('Error fetching profiles:', error));
