@@ -33,14 +33,14 @@ function GamePage() {
       {profile ? (
         <div className="game" style={{display:'flex',flexDirection:'column',gap:20}}>
           <div className="profile-stats" style={{display:'flex',gap:20}}>
-          <div className="coin-data" style={{ display: "flex" }}>
+          <div className="coin-data" style={{ display: "flex",backgroundColor:"white" }}>
             <img src={CoinImage} alt="Coin" width={30} height={30} />
             <div style={{ position: "relative", top: 5 }}>
              <b>{profile.coins}</b>
             </div>
           </div>
 
-          <div className="karma-data" style={{ display: "flex" }}>
+          <div className="karma-data" style={{ display: "flex",backgroundColor:"white" }}>
             <img src={KarmaImage} alt="Coin" width={30} height={30} />
             <div style={{ position: "relative", top: 5 }}>
              <b>{profile.karma}</b>
