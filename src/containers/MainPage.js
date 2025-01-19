@@ -1,8 +1,17 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import '../styles/MainPage.css'
 import { isMobile } from 'react-device-detect';
 
 function MainPage() {
+    const [profiles, setProfiles] = useState([]);
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:5000/api/profiles')
+          .then((response) => response.json())
+          .then((data) => console.log(data))
+          .catch((error) => console.error('Error fetching profiles:', error));
+      }, []);
+
   return (
     <div style={{textAlign: 'center'}}>
         <h1>WELCOME TO PRISON SURVIVAL SIM</h1>

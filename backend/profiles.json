@@ -1,0 +1,6 @@
+[
+    { "id": 1, "name": "John Doe", "age": 30, "occupation": "Engineer" },
+    { "id": 2, "name": "Jane Smith", "age": 25, "occupation": "Designer" },
+    { "id": 3, "name": "Sam Brown", "age": 28, "occupation": "Developer" },
+    { "id": 4, "name": "Emily Davis", "age": 22, "occupation": "Content Writer" }
+]
