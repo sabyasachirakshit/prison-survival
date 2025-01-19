@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
 import PrisonImage from "../media/prison.webp";
+import InventoryImage from "../media/inventory.jpg";
+import CaseFilesIcon from "../media/case_files.png";
 
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
@@ -47,8 +49,16 @@ function GamePage() {
             </div>
           </div>
         </div>
-        <div className="serve-button" style={{width:"100%",display:"flex",justifyContent:'center'}}><button style={{position:"relative",top:260,width:"50%"}}>Serve Sentence</button></div>
+        <div className="serve-button" style={{width:"100%",display:"flex",justifyContent:'center',position:"relative",marginTop:220}}><button style={{width:"50%"}}>Serve Sentence</button></div>
+        <div className="lower" style={{display:'flex',gap:50,marginTop:20}}>
+          <div className="inventory">
+            <img src={InventoryImage} alt="Inventory" width={50} height={50} />
+          </div>
+          <div className="inventory">
+            <img src={CaseFilesIcon} alt="Inventory" width={50} height={50} />
+          </div>
         </div>
+      </div>
         
 
       ) : (
