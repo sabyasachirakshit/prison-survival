@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
+import PrisonImage from "../media/prison.png";
 
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
@@ -22,7 +23,13 @@ function GamePage() {
   }, [profile_id]);
 
   return (
-    <div>
+    <div style={{
+      backgroundImage: `url(${PrisonImage})`, // Set the background image
+      backgroundSize: "cover", // Ensure the image covers the whole screen
+      backgroundPosition: "center", // Center the background image
+      minHeight: "100vh", // Make sure the div takes up the full height of the viewport
+      padding: "20px", // Add some padding to the content
+    }}>
       {profile ? (
         <div className="game" style={{display:'flex',flexDirection:'column',gap:20}}>
           <div className="profile-stats" style={{display:'flex',gap:20}}>
