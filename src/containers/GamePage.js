@@ -6,6 +6,7 @@ import PrisonImage from "../media/prison.webp";
 import InventoryImage from "../media/inventory.jpg";
 import CaseFilesIcon from "../media/case_files.png";
 import MarketIcon from "../media/market_icon.png";
+import StashIcon from "../media/stash.jpg";
 
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
@@ -51,16 +52,21 @@ function GamePage() {
           </div>
         </div>
         <div className="serve-button" style={{width:"100%",display:"flex",justifyContent:'center',position:"relative",marginTop:220}}><button style={{width:"50%"}}>Serve Sentence</button></div>
-        <div className="lower" style={{display:'flex',gap:50,marginTop:20}}>
+        <div className="lower" style={{display:'flex',gap:50,marginTop:200}}>
           <div className="inventory">
             <img src={InventoryImage} alt="Inventory" width={50} height={50} />
           </div>
           <div className="inventory">
-            <img src={CaseFilesIcon} alt="Inventory" width={50} height={50} />
+            <img src={StashIcon} alt="Inventory" width={50} height={55} style={{position:"relative",top:-7}} />
           </div>
           <div className="inventory">
             <img src={MarketIcon} alt="Inventory" width={50} height={57} style={{position:"relative",top:-7}} />
           </div>
+          <div className="inventory">
+            <img src={CaseFilesIcon} alt="Inventory" width={50} height={50} />
+          </div>
+          
+          
         </div>
       </div>
         
