@@ -12,6 +12,7 @@ function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
   const [profile, setProfile] = useState(null);
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
+  const [aftermath, setAftermath] = useState(null); // State to show aftermath text
 
   useEffect(() => {
     // Fetch profile data from backend
@@ -29,6 +30,22 @@ function GamePage() {
 
   const handleServeSentence = () => {
     setShowScenario(true); // Show the scenario and hide the images
+  };
+
+  const handleOptionClick = (option) => {
+    // Handle aftermath based on the option chosen
+    const aftermathMessages = {
+      apologize: "The guard accepts your apology but keeps an eye on you.",
+      bribe: "The guard takes your coins and lets you off the hook.",
+      attack: "You manage to knock out the guard but now have more guards chasing you!",
+      silent: "The guard punishes you, but you stay strong.",
+    };
+    setAftermath(aftermathMessages[option]); // Set aftermath message
+  };
+
+  const handleContinue = () => {
+    setShowScenario(false); // Go back to the original UI
+    setAftermath(null); // Reset aftermath state
   };
 
   return (
@@ -101,20 +118,27 @@ function GamePage() {
                 <img src={CaseFilesIcon} alt="Case Files" width={50} height={50} />
               </div>
             </div>
+          ) : aftermath ? (
+            <div className="aftermath" style={{ marginTop: 50, textAlign: "center" }}>
+              <h3>{aftermath}</h3>
+              <button style={{ marginTop: 20, padding: "10px", cursor: "pointer" }} onClick={handleContinue}>
+                Continue
+              </button>
+            </div>
           ) : (
             <div className="scenario" style={{ marginTop: 50, textAlign: "center" }}>
-              <h3 style={{color:"white"}}>A guard catches you trying to sneak a note. What do you do?</h3>
+              <h3>A guard catches you trying to sneak a note. What do you do?</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20 }}>
-                <button style={{ padding: "10px", cursor: "pointer" }}>
+                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("apologize")}>
                   Apologize and claim it was a misunderstanding
                 </button>
-                <button style={{ padding: "10px", cursor: "pointer" }}>
+                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("bribe")}>
                   Bribe the guard with some coins
                 </button>
-                <button style={{ padding: "10px", cursor: "pointer" }}>
+                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("attack")}>
                   Attack the guard to escape
                 </button>
-                <button style={{ padding: "10px", cursor: "pointer" }}>
+                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("silent")}>
                   Stay silent and accept punishment
                 </button>
               </div>
