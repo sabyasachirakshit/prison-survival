@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import MainPage from './containers/MainPage';
 
 function App() {
   return (
     <div className="App-Prison">
-      <h1>WELCOME TO PRISON SURVIVAL SIM</h1>
+      <MainPage />
     </div>
   );
 }
