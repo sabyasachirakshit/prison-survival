@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/MainPage.css';
+import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 
 function MainPage() {
@@ -32,7 +33,13 @@ function MainPage() {
                         className="profile-slot"
                         style={isMobile ? { width: '100px' } : {}}
                     >
-                        {profile ? profile.name : '+ Add Profile'}
+                         {profile ? (
+                            <Link to={`/game/${profile.id}`} style={{ textDecoration: 'none' }}>
+                                {profile.name}
+                            </Link>
+                        ) : (
+                            '+ Add Profile'
+                        )}
                     </div>
                 ))}
             </div>
