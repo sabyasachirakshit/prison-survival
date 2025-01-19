@@ -21,7 +21,6 @@ function GamePage() {
 
   return (
     <div>
-      <h1>Game Page</h1>
       {profile ? (
         <div>
           <h2>{profile.name}</h2>
