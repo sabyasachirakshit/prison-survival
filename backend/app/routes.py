@@ -1,7 +1,7 @@
 from flask import jsonify, request
 import json
 
-PROFILE_DATA_FILE = "./profiles.json"
+PROFILE_DATA_FILE = "./profiles_list.json"
 
 def read_profiles():
     try:
