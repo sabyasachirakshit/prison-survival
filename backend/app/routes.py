@@ -6,10 +6,7 @@ PROFILE_DATA_FILE = "./profiles.json"
 def read_profiles():
     try:
         with open(PROFILE_DATA_FILE, "r") as file:
-            print("Hi?")
-            data = json.load(file)
-            print("Profiles loaded:", data) 
-            return data
+            return json.load(file)
     except FileNotFoundError:
         print("File not found. Returning an empty list.") 
         return []
@@ -22,7 +19,6 @@ def write_profiles(data):
 def register_routes(app):
     @app.route('/api/profiles', methods=['GET'])
     def get_profiles():
-        print("GET /api/profiles endpoint hit")
         profiles = read_profiles()
         return jsonify(profiles)
 
