@@ -5,6 +5,7 @@ import KarmaImage from "../media/karma.png";
 import PrisonImage from "../media/prison.webp";
 import InventoryImage from "../media/inventory.jpg";
 import CaseFilesIcon from "../media/case_files.png";
+import MarketIcon from "../media/market_icon.png";
 
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
@@ -56,6 +57,9 @@ function GamePage() {
           </div>
           <div className="inventory">
             <img src={CaseFilesIcon} alt="Inventory" width={50} height={50} />
+          </div>
+          <div className="inventory">
+            <img src={MarketIcon} alt="Inventory" width={50} height={57} style={{position:"relative",top:-7}} />
           </div>
         </div>
       </div>
