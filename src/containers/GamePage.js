@@ -52,7 +52,7 @@ function GamePage() {
           <p><strong>Cellmate Status:</strong> {profile.cellmate_status}</p>
         </div>
       ) : (
-        <p>Loading profile...</p>
+        <p>Profile not available for id {profile_id}</p>
       )}
     </div>
   );

@@ -9,9 +9,12 @@ function MainPage() {
     useEffect(() => {
         fetch('http://192.168.0.103:5000/api/profiles')
           .then((response) => response.json())
-          .then((data) => setProfiles(data))
+          .then((data) => {
+            console.log("Fetched profiles data:", data); // Log profiles data
+            setProfiles(data);
+          })
           .catch((error) => console.error('Error fetching profiles:', error));
-    }, []);
+      }, []);
 
     // Generate slots with profiles or "+ Add Profile"
     const profileSlots = [...profiles, ...Array(10 - profiles.length).fill(null)];

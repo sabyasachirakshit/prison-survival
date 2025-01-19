@@ -4,10 +4,14 @@ import json
 PROFILE_LIST_FILE = "./profiles_list.json"
 PROFILE_DATA_FILE = "./profiles_data.json"
 
-def read_profiles():
+def read_profiles(check=False):
     try:
-        with open(PROFILE_DATA_FILE, "r") as file:
-            return json.load(file)
+        if check:
+            with open(PROFILE_DATA_FILE, "r") as file:
+                return json.load(file)
+        else:
+            with open(PROFILE_LIST_FILE, "r") as file:
+                return json.load(file)
     except FileNotFoundError:
         print("File not found. Returning an empty list.") 
         return []
@@ -25,7 +29,7 @@ def register_routes(app):
     
     @app.route('/api/profiles/<int:profile_id>', methods=['GET'])
     def get_profile_by_id(profile_id):
-        profiles = read_profiles()
+        profiles = read_profiles(True)
         # Find the profile by matching the id
         profile = next((p for p in profiles if p['id'] == profile_id), None)
         if profile:
