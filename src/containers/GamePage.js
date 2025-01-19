@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
-import PrisonImage from "../media/prison.png";
+import PrisonImage from "../media/prison.webp";
 
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
