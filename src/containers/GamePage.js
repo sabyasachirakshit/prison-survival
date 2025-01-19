@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
-import PrisonImage from "../media/prison.webp";
+import PrisonImage from "../media/prison/prison.webp";
 import InventoryImage from "../media/inventory.jpg";
 import CaseFilesIcon from "../media/case_files.png";
 import MarketIcon from "../media/market_icon.png";
