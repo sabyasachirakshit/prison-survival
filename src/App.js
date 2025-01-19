@@ -1,11 +1,15 @@
-import './App.css';
 import MainPage from './containers/MainPage';
+import { BrowserRouter, Routes, Route } from "react-router";
+import GamePage from './containers/GamePage';
 
 function App() {
   return (
-    <div className="App-Prison">
-      <MainPage />
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/game" element={<GamePage />} />
+    </Routes>
+  </BrowserRouter>
   );
 }
 
