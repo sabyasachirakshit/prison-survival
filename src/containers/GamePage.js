@@ -16,6 +16,7 @@ function GamePage() {
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
   const [aftermath, setAftermath] = useState(null); // State to show aftermath text
   const [isInventoryModalVisible, setIsInventoryModalVisible] = useState(false); // State for modal visibility
+  const [isStashVisible, setIsStashVisible] = useState(false); // State for stash visibility
   const baseURL = process.env.REACT_APP_LOCAL_IP;
 
   useEffect(() => {
@@ -57,8 +58,16 @@ function GamePage() {
     setIsInventoryModalVisible(true); // Show inventory modal
   };
 
+  const handleStashClick = () => {
+    setIsStashVisible(true); // Show stash modal
+  };
+
   const handleModalClose = () => {
     setIsInventoryModalVisible(false); // Hide inventory modal
+  };
+
+  const handleStashClose = () => {
+    setIsStashVisible(false); // Hide stash modal
   };
 
   return (
@@ -139,7 +148,7 @@ function GamePage() {
                     height={50}
                   />
                 </div>
-                <div className="inventory">
+                <div className="inventory" onClick={handleStashClick}>
                   <img
                     src={StashIcon}
                     alt="Stash"
@@ -249,6 +258,43 @@ function GamePage() {
         >
           {profile &&
             profile.inventory.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  textAlign: "center",
+                  backgroundColor: "#f9f9f9",
+                }}
+              >
+                <InventoryItem key={index} itemName={item} />
+              </div>
+            ))}
+        </div>
+      </Modal>
+
+      {/* Stash Modal */}
+      <Modal
+        title="Hidden Stash"
+        visible={isStashVisible}
+        onCancel={handleStashClose}
+        footer={null}
+        bodyStyle={{
+          maxHeight: "400px", // Limit the height of the modal body
+          overflowY: "auto", // Enable scrolling within the modal
+          padding: "20px", // Add padding inside the modal content
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)", // 2 columns layout
+            gap: "10px", // Space between grid items
+          }}
+        >
+          {profile &&
+            profile.hidden_stash.map((item, index) => (
               <div
                 key={index}
                 style={{
