@@ -1,5 +1,5 @@
 import { Modal, Tabs } from "antd";
-
+import case_files from "../../media/case_files.jpg";
 const { TabPane } = Tabs;
 
 const CaseFilesModal = ({
@@ -17,6 +17,10 @@ const CaseFilesModal = ({
         maxHeight: "400px", // Limit modal height
         overflowY: "auto", // Scrollable content
         padding: "20px", // Inner padding
+        backgroundImage: `url(${case_files})`,// Add background image
+        backgroundSize: "cover", // Ensure the image covers the entire background
+        backgroundPosition: "center", // Position the image in the center
+        backgroundRepeat: "no-repeat", // Ensure the image doesn't repeat
       }}
     >
       {profile ? (
