@@ -34,6 +34,20 @@ function GamePage() {
       .catch((error) => console.error("Error fetching profile:", error));
   }, [profile_id, baseURL]);
 
+  const refreshProfile = () => {
+    // Fetch profile data from backend
+    fetch(`http://${baseURL}:5000/api/profiles/${profile_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          setProfile(data); // Set the profile data in state
+        }
+      })
+      .catch((error) => console.error("Error fetching profile:", error));
+  };
+
   const handleServeSentence = () => {
     setShowScenario(true); // Show the scenario and hide the images
   };
@@ -56,14 +70,17 @@ function GamePage() {
   };
 
   const handleInventoryClick = () => {
+    refreshProfile(); // Refresh profile data
     setIsInventoryModalVisible(true); // Show inventory modal
   };
 
   const handleStashClick = () => {
+    refreshProfile(); // Refresh profile data
     setIsStashVisible(true); // Show stash modal
   };
 
   const handleCaseFilesClick = () => {
+    refreshProfile(); // Refresh profile data
     setCaseFilesVisible(true); // Show case files modal
   };
 
