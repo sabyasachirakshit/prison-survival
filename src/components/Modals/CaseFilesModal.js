@@ -36,8 +36,24 @@ const CaseFilesModal = ({
               <strong>Status:</strong> {profile.status}
             </div>
             <div style={{ marginBottom: "10px" }}>
-              <strong>Karma:</strong> {profile.karma}
+              <strong>Vitality:</strong> {profile.vitality}
             </div>
+            <div style={{ marginBottom: "10px" }}>
+              <strong>Agility:</strong> {profile.agility}
+            </div>
+            <div style={{ marginBottom: "10px" }}>
+              <strong>Strength:</strong> {profile.strength}
+            </div>
+            {profile.snitch ? (
+              <div style={{ marginBottom: "10px" }}>
+                <strong>Snitch:</strong> Yes
+              </div>
+            ) : null}
+            {profile.in_debt ? (
+              <div style={{ marginBottom: "10px" }}>
+                <strong>In Debt:</strong> Yes
+              </div>
+            ) : null}
             <div>
               <strong>Jail Time Remaining:</strong> {profile.jail_years} years,{" "}
               {profile.jail_months} months, {profile.jail_days} days
