@@ -9,7 +9,7 @@ import CocaineImage from "../media/inventory/cocaine.png";
 import MoonshineImage from "../media/inventory/moonshine.png";
 import WeedImage from "../media/inventory/weed.png";
 
-const InventoryItem = ({ itemName, refreshProfile, profile }) => {
+const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { profile_id } = useParams();
   const baseURL = process.env.REACT_APP_LOCAL_IP;
@@ -39,28 +39,50 @@ const InventoryItem = ({ itemName, refreshProfile, profile }) => {
 
   const moveToTrash = async (itemName) => {
     try {
-      // Make the DELETE request
-      const response = await fetch(
-        `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/${itemName}`,
-        {
-          method: "DELETE",
+      if (hidden === true) {
+        // Make the DELETE request for hidden stash
+        const response_hidden = await fetch(
+          `http://${baseURL}:5000/api/profiles/${profile_id}/hidden_stash/${itemName}`,
+          {
+            method: "DELETE",
+          }
+        );
+  
+        if (response_hidden.ok) {
+          // Wait for 500ms before refreshing the profile
+          await sleep(500);
+          refreshProfile(); // Refresh the profile after the wait
+  
+          // Close the modal
+          setIsModalVisible(false);
+        } else {
+          console.error("Failed to delete the item from hidden stash");
         }
-      );
-
-      if (response.ok) {
-        // Wait for 2 seconds before refreshing the profile
-        await sleep(500);
-        refreshProfile(); // Refresh the profile after the wait
-
-        // Close the modal
-        setIsModalVisible(false);
       } else {
-        console.error("Failed to delete the item");
+        // Make the DELETE request for inventory
+        const response = await fetch(
+          `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/${itemName}`,
+          {
+            method: "DELETE",
+          }
+        );
+  
+        if (response.ok) {
+          // Wait for 500ms before refreshing the profile
+          await sleep(500);
+          refreshProfile(); // Refresh the profile after the wait
+  
+          // Close the modal
+          setIsModalVisible(false);
+        } else {
+          console.error("Failed to delete the item from inventory");
+        }
       }
     } catch (error) {
       console.error("Error deleting the item:", error);
     }
   };
+  
 
   return (
     <>

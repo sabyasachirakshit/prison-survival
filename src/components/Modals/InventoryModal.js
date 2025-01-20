@@ -42,7 +42,7 @@ const InventoryModal = ({
                 backgroundColor: "#f9f9f9",
               }}
             >
-              <InventoryItem profile={profile} key={index} itemName={item} refreshProfile={refreshProfile} />
+              <InventoryItem hidden={true} profile={profile} key={index} itemName={item} refreshProfile={refreshProfile} />
             </div>
           ))
         ) : (
