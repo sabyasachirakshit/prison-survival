@@ -77,7 +77,11 @@ function GamePage() {
             </div>
           </div>
 
-          <div
+          
+
+          {!showScenario ? (
+            <>
+            <div
             className="serve-button"
             style={{
               width: "100%",
@@ -91,8 +95,6 @@ function GamePage() {
               <h4>Serve Sentence</h4>
             </button>
           </div>
-
-          {!showScenario ? (
             <div className="lower" style={{ display: "flex", gap: 50, marginTop: 200 }}>
               <div className="inventory">
                 <img src={InventoryImage} alt="Inventory" width={50} height={50} />
@@ -119,6 +121,7 @@ function GamePage() {
                 <img src={CaseFilesIcon} alt="Case Files" width={50} height={50} />
               </div>
             </div>
+            </>
           ) : aftermath ? (
             <div className="aftermath" style={{ marginTop: 50, textAlign: "center" }}>
               <h3>{aftermath}</h3>
