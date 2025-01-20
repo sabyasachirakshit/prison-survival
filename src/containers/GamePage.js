@@ -41,7 +41,8 @@ function GamePage() {
     const aftermathMessages = {
       apologize: "The guard accepts your apology but keeps an eye on you.",
       bribe: "The guard takes your coins and lets you off the hook.",
-      attack: "You manage to knock out the guard but now have more guards chasing you!",
+      attack:
+        "You manage to knock out the guard but now have more guards chasing you!",
       silent: "The guard punishes you, but you stay strong.",
     };
     setAftermath(aftermathMessages[option]); // Set aftermath message
@@ -71,16 +72,25 @@ function GamePage() {
       }}
     >
       {profile ? (
-        <div className="game" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div
+          className="game"
+          style={{ display: "flex", flexDirection: "column", gap: 20 }}
+        >
           <div className="profile-stats" style={{ display: "flex", gap: 20 }}>
-            <div className="coin-data" style={{ display: "flex", backgroundColor: "white" }}>
+            <div
+              className="coin-data"
+              style={{ display: "flex", backgroundColor: "white" }}
+            >
               <img src={CoinImage} alt="Coin" width={30} height={30} />
               <div style={{ position: "relative", top: 5 }}>
                 <b>{profile.coins}</b>
               </div>
             </div>
 
-            <div className="karma-data" style={{ display: "flex", backgroundColor: "white" }}>
+            <div
+              className="karma-data"
+              style={{ display: "flex", backgroundColor: "white" }}
+            >
               <img src={KarmaImage} alt="Karma" width={30} height={30} />
               <div style={{ position: "relative", top: 5 }}>
                 <b>{profile.karma}</b>
@@ -101,15 +111,33 @@ function GamePage() {
                 }}
               >
                 <button
-                  style={{ width: "50%", height: 50, borderRadius: 4, backgroundColor: "#6174fc", color: "white" }}
+                  style={{
+                    width: "50%",
+                    height: 50,
+                    borderRadius: 4,
+                    backgroundColor: "#6174fc",
+                    color: "white",
+                  }}
                   onClick={handleServeSentence}
                 >
                   <h4>Serve Sentence</h4>
                 </button>
               </div>
-              <div className="lower" style={{ display: "flex", gap: 50, marginTop: 200 }}>
-                <div className="inventory" onClick={handleInventoryClick} style={{ cursor: "pointer" }}>
-                  <img src={InventoryImage} alt="Inventory" width={50} height={50} />
+              <div
+                className="lower"
+                style={{ display: "flex", gap: 50, marginTop: 200 }}
+              >
+                <div
+                  className="inventory"
+                  onClick={handleInventoryClick}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={InventoryImage}
+                    alt="Inventory"
+                    width={50}
+                    height={50}
+                  />
                 </div>
                 <div className="inventory">
                   <img
@@ -130,31 +158,66 @@ function GamePage() {
                   />
                 </div>
                 <div className="inventory">
-                  <img src={CaseFilesIcon} alt="Case Files" width={50} height={50} />
+                  <img
+                    src={CaseFilesIcon}
+                    alt="Case Files"
+                    width={50}
+                    height={50}
+                  />
                 </div>
               </div>
             </>
           ) : aftermath ? (
-            <div className="aftermath" style={{ marginTop: 50, textAlign: "center" }}>
+            <div
+              className="aftermath"
+              style={{ marginTop: 50, textAlign: "center" }}
+            >
               <h3>{aftermath}</h3>
-              <button style={{ marginTop: 20, padding: "10px", cursor: "pointer" }} onClick={handleContinue}>
+              <button
+                style={{ marginTop: 20, padding: "10px", cursor: "pointer" }}
+                onClick={handleContinue}
+              >
                 Continue
               </button>
             </div>
           ) : (
-            <div className="scenario" style={{ marginTop: 50, textAlign: "center" }}>
-              <h3>A guard catches you trying to sneak a note. What do you do?</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20 }}>
-                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("apologize")}>
+            <div
+              className="scenario"
+              style={{ marginTop: 50, textAlign: "center" }}
+            >
+              <h3>
+                A guard catches you trying to sneak a note. What do you do?
+              </h3>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  marginTop: 20,
+                }}
+              >
+                <button
+                  style={{ padding: "10px", cursor: "pointer" }}
+                  onClick={() => handleOptionClick("apologize")}
+                >
                   Apologize and claim it was a misunderstanding
                 </button>
-                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("bribe")}>
+                <button
+                  style={{ padding: "10px", cursor: "pointer" }}
+                  onClick={() => handleOptionClick("bribe")}
+                >
                   Bribe the guard with some coins
                 </button>
-                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("attack")}>
+                <button
+                  style={{ padding: "10px", cursor: "pointer" }}
+                  onClick={() => handleOptionClick("attack")}
+                >
                   Attack the guard to escape
                 </button>
-                <button style={{ padding: "10px", cursor: "pointer" }} onClick={() => handleOptionClick("silent")}>
+                <button
+                  style={{ padding: "10px", cursor: "pointer" }}
+                  onClick={() => handleOptionClick("silent")}
+                >
                   Stay silent and accept punishment
                 </button>
               </div>
@@ -171,22 +234,34 @@ function GamePage() {
         visible={isInventoryModalVisible}
         onCancel={handleModalClose}
         footer={null}
+        bodyStyle={{
+          maxHeight: "400px", // Limit the height of the modal body
+          overflowY: "auto", // Enable scrolling within the modal
+          padding: "20px", // Add padding inside the modal content
+        }}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
-          {profile && profile.inventory.map((item, index) => (
-            <div
-              key={index}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                padding: "10px",
-                textAlign: "center",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              <InventoryItem key={index} itemName={item} />
-            </div>
-          ))}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)", // 2 columns layout
+            gap: "10px", // Space between grid items
+          }}
+        >
+          {profile &&
+            profile.inventory.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  textAlign: "center",
+                  backgroundColor: "#f9f9f9",
+                }}
+              >
+                <InventoryItem key={index} itemName={item} />
+              </div>
+            ))}
         </div>
       </Modal>
     </div>
