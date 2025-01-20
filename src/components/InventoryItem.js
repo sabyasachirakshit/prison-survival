@@ -13,7 +13,7 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { profile_id } = useParams();
   const baseURL = process.env.REACT_APP_LOCAL_IP;
-  // Mapping of item names to images
+
   const itemImages = {
     Bread: BreadImage,
     Cigarettes: CigarettesImage,
@@ -24,65 +24,43 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
     Weed: WeedImage,
   };
 
-  // Handlers for modal visibility
   const showModal = () => setIsModalVisible(true);
   const handleCancel = () => setIsModalVisible(false);
 
-  // Define the sleep function
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  // Action handlers
-  const moveToStash = async (itemName) => {
-    const response = fetch(
-      `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/to_hidden_stash/${itemName}`,
-      {
-        method: "POST",
+
+  const moveToHiddenOrInventory = async (itemName) => {
+    try {
+      const endpoint = hidden
+        ? `http://${baseURL}:5000/api/profiles/${profile_id}/hidden_stash/to_inventory/${itemName}`
+        : `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/to_hidden_stash/${itemName}`;
+      const response = await fetch(endpoint, { method: "POST" });
+
+      if (response.ok) {
+        await sleep(100); // Optional: Wait before refreshing the profile
+        refreshProfile();
+        setIsModalVisible(false);
+      } else {
+        console.error("Failed to move the item.");
       }
-    );
-    await sleep(100); // Wait for 500ms before refreshing the profile
-    refreshProfile();
-    setIsModalVisible(false);
+    } catch (error) {
+      console.error("Error moving the item:", error);
+    }
   };
 
   const moveToTrash = async (itemName) => {
     try {
-      if (hidden === true) {
-        // Make the DELETE request for hidden stash
-        const response_hidden = await fetch(
-          `http://${baseURL}:5000/api/profiles/${profile_id}/hidden_stash/${itemName}`,
-          {
-            method: "DELETE",
-          }
-        );
+      const endpoint = hidden
+        ? `http://${baseURL}:5000/api/profiles/${profile_id}/hidden_stash/${itemName}`
+        : `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/${itemName}`;
+      const response = await fetch(endpoint, { method: "DELETE" });
 
-        if (response_hidden.ok) {
-          // Wait for 500ms before refreshing the profile
-          await sleep(100);
-          refreshProfile(); // Refresh the profile after the wait
-
-          // Close the modal
-          setIsModalVisible(false);
-        } else {
-          console.error("Failed to delete the item from hidden stash");
-        }
+      if (response.ok) {
+        await sleep(100); // Optional: Wait before refreshing the profile
+        refreshProfile();
+        setIsModalVisible(false);
       } else {
-        // Make the DELETE request for inventory
-        const response = await fetch(
-          `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/${itemName}`,
-          {
-            method: "DELETE",
-          }
-        );
-
-        if (response.ok) {
-          // Wait for 500ms before refreshing the profile
-          await sleep(100);
-          refreshProfile(); // Refresh the profile after the wait
-
-          // Close the modal
-          setIsModalVisible(false);
-        } else {
-          console.error("Failed to delete the item from inventory");
-        }
+        console.error("Failed to delete the item.");
       }
     } catch (error) {
       console.error("Error deleting the item:", error);
@@ -91,10 +69,9 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
 
   return (
     <>
-      {/* Inventory Item */}
       <div
         style={{ textAlign: "center", margin: "10px", cursor: "pointer" }}
-        onClick={showModal} // Open modal on click
+        onClick={showModal}
       >
         <img
           src={itemImages[itemName]}
@@ -106,7 +83,6 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
         </div>
       </div>
 
-      {/* Modal */}
       <Modal
         title={`Manage ${itemName}`}
         visible={isModalVisible}
@@ -118,9 +94,9 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
           <Button
             type="primary"
             style={{ margin: "5px" }}
-            onClick={() => moveToStash(itemName)}
+            onClick={() => moveToHiddenOrInventory(itemName)}
           >
-            Move to Stash
+            {hidden ? "Move to Inventory" : "Move to Stash"}
           </Button>
           <Button
             type="danger"
