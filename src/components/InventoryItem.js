@@ -9,9 +9,9 @@ import CocaineImage from "../media/inventory/cocaine.png";
 import MoonshineImage from "../media/inventory/moonshine.png";
 import WeedImage from "../media/inventory/weed.png";
 
-const InventoryItem = ({ itemName, refreshProfile}) => {
+const InventoryItem = ({ itemName, refreshProfile, profile }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { profile_id } = useParams(); 
+  const { profile_id } = useParams();
   const baseURL = process.env.REACT_APP_LOCAL_IP;
   // Mapping of item names to images
   const itemImages = {
@@ -34,12 +34,32 @@ const InventoryItem = ({ itemName, refreshProfile}) => {
     setIsModalVisible(false);
   };
 
-  const moveToTrash = (itemName) => {
-    const response = fetch(`http://${baseURL}:5000/api/profiles/${profile_id}/inventory/${itemName}`, {
-      method: "DELETE",
-    });
-    refreshProfile();
-    setIsModalVisible(false);
+  // Define the sleep function
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const moveToTrash = async (itemName) => {
+    try {
+      // Make the DELETE request
+      const response = await fetch(
+        `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/${itemName}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Wait for 2 seconds before refreshing the profile
+        await sleep(500);
+        refreshProfile(); // Refresh the profile after the wait
+
+        // Close the modal
+        setIsModalVisible(false);
+      } else {
+        console.error("Failed to delete the item");
+      }
+    } catch (error) {
+      console.error("Error deleting the item:", error);
+    }
   };
 
   return (
