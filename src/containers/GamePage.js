@@ -157,7 +157,7 @@ function GamePage() {
                     style={{ position: "relative", top: -7 }}
                   />
                 </div>
-                <div className="inventory">
+                <div className="market">
                   <img
                     src={MarketIcon}
                     alt="Market"
@@ -166,7 +166,7 @@ function GamePage() {
                     style={{ position: "relative", top: -7 }}
                   />
                 </div>
-                <div className="inventory">
+                <div className="case-files">
                   <img
                     src={CaseFilesIcon}
                     alt="Case Files"
