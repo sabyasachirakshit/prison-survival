@@ -50,7 +50,7 @@ const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
   
         if (response_hidden.ok) {
           // Wait for 500ms before refreshing the profile
-          await sleep(500);
+          await sleep(100);
           refreshProfile(); // Refresh the profile after the wait
   
           // Close the modal
@@ -69,7 +69,7 @@ const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
   
         if (response.ok) {
           // Wait for 500ms before refreshing the profile
-          await sleep(500);
+          await sleep(100);
           refreshProfile(); // Refresh the profile after the wait
   
           // Close the modal
