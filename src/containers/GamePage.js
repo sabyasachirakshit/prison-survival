@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Modal } from "antd";
+import InventoryItem from "../components/InventoryItem";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
 import PrisonImage from "../media/prison/prison.webp";
@@ -183,7 +184,7 @@ function GamePage() {
                 backgroundColor: "#f9f9f9",
               }}
             >
-              {item}
+              <InventoryItem key={index} itemName={item} />
             </div>
           ))}
         </div>
