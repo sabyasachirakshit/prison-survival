@@ -87,8 +87,8 @@ function GamePage() {
               marginTop: 220,
             }}
           >
-            <button style={{ width: "50%" }} onClick={handleServeSentence}>
-              Serve Sentence
+            <button style={{ width: "50%",height:50,borderRadius:4,backgroundColor:"#6174fc",color:"white" }} onClick={handleServeSentence}>
+              <h4>Serve Sentence</h4>
             </button>
           </div>
 
