@@ -9,7 +9,7 @@ import CocaineImage from "../media/inventory/cocaine.png";
 import MoonshineImage from "../media/inventory/moonshine.png";
 import WeedImage from "../media/inventory/weed.png";
 
-const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
+const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { profile_id } = useParams();
   const baseURL = process.env.REACT_APP_LOCAL_IP;
@@ -28,14 +28,20 @@ const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
   const showModal = () => setIsModalVisible(true);
   const handleCancel = () => setIsModalVisible(false);
 
+  // Define the sleep function
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   // Action handlers
-  const moveToStash = (itemName) => {
+  const moveToStash = async (itemName) => {
+    const response = fetch(
+      `http://${baseURL}:5000/api/profiles/${profile_id}/inventory/to_hidden_stash/${itemName}`,
+      {
+        method: "POST",
+      }
+    );
+    await sleep(100); // Wait for 500ms before refreshing the profile
     refreshProfile();
     setIsModalVisible(false);
   };
-
-  // Define the sleep function
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const moveToTrash = async (itemName) => {
     try {
@@ -47,12 +53,12 @@ const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
             method: "DELETE",
           }
         );
-  
+
         if (response_hidden.ok) {
           // Wait for 500ms before refreshing the profile
           await sleep(100);
           refreshProfile(); // Refresh the profile after the wait
-  
+
           // Close the modal
           setIsModalVisible(false);
         } else {
@@ -66,12 +72,12 @@ const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
             method: "DELETE",
           }
         );
-  
+
         if (response.ok) {
           // Wait for 500ms before refreshing the profile
           await sleep(100);
           refreshProfile(); // Refresh the profile after the wait
-  
+
           // Close the modal
           setIsModalVisible(false);
         } else {
@@ -82,7 +88,6 @@ const InventoryItem = ({ itemName, refreshProfile,hidden=false }) => {
       console.error("Error deleting the item:", error);
     }
   };
-  
 
   return (
     <>
