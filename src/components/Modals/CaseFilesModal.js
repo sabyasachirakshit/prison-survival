@@ -2,7 +2,11 @@ import { Modal, Tabs } from "antd";
 
 const { TabPane } = Tabs;
 
-const CaseFilesModal = ({ caseFilesVisible, handleCaseFilesClose, profile }) => {
+const CaseFilesModal = ({
+  caseFilesVisible,
+  handleCaseFilesClose,
+  profile,
+}) => {
   return (
     <Modal
       title="Case Files"
@@ -11,8 +15,8 @@ const CaseFilesModal = ({ caseFilesVisible, handleCaseFilesClose, profile }) => 
       footer={null}
       bodyStyle={{
         maxHeight: "400px", // Limit modal height
-        overflowY: "auto",  // Scrollable content
-        padding: "20px",    // Inner padding
+        overflowY: "auto", // Scrollable content
+        padding: "20px", // Inner padding
       }}
     >
       {profile ? (
@@ -35,8 +39,8 @@ const CaseFilesModal = ({ caseFilesVisible, handleCaseFilesClose, profile }) => 
               <strong>Karma:</strong> {profile.karma}
             </div>
             <div>
-              <strong>Jail Time Remaining:</strong>{" "}
-              {profile.jail_years} years, {profile.jail_months} months, {profile.jail_days} days
+              <strong>Jail Time Remaining:</strong> {profile.jail_years} years,{" "}
+              {profile.jail_months} months, {profile.jail_days} days
             </div>
           </TabPane>
 
@@ -59,7 +63,9 @@ const CaseFilesModal = ({ caseFilesVisible, handleCaseFilesClose, profile }) => 
             </div>
             <div>
               <strong>Jail Time Remaining:</strong>{" "}
-              {profile.cellmate_remaining_years} years, {profile.cellmate_remaining_months} months, {profile.cellmate_remaining_days} days
+              {profile.cellmate_remaining_years} years,{" "}
+              {profile.cellmate_remaining_months} months,{" "}
+              {profile.cellmate_remaining_days} days
             </div>
           </TabPane>
         </Tabs>

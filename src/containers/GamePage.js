@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Modal } from "antd";
-import InventoryItem from "../components/InventoryItem";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
 import PrisonImage from "../media/prison/prison.webp";
@@ -10,6 +8,7 @@ import CaseFilesIcon from "../media/case_files.png";
 import MarketIcon from "../media/market_icon.png";
 import StashIcon from "../media/stash.jpg";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
+import InventoryModal from "../components/Modals/InventoryModal";
 
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
@@ -248,78 +247,10 @@ function GamePage() {
       )}
 
       {/* Inventory Modal */}
-      <Modal
-        title="Inventory"
-        visible={isInventoryModalVisible}
-        onCancel={handleModalClose}
-        footer={null}
-        bodyStyle={{
-          maxHeight: "400px", // Limit the height of the modal body
-          overflowY: "auto", // Enable scrolling within the modal
-          padding: "20px", // Add padding inside the modal content
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)", // 2 columns layout
-            gap: "10px", // Space between grid items
-          }}
-        >
-          {profile &&
-            profile.inventory.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  textAlign: "center",
-                  backgroundColor: "#f9f9f9",
-                }}
-              >
-                <InventoryItem key={index} itemName={item} />
-              </div>
-            ))}
-        </div>
-      </Modal>
+      <InventoryModal isInventoryModalVisible={isInventoryModalVisible} handleModalClose={handleModalClose} profile={profile} />
 
       {/* Stash Modal */}
-      <Modal
-        title="Hidden Stash"
-        visible={isStashVisible}
-        onCancel={handleStashClose}
-        footer={null}
-        bodyStyle={{
-          maxHeight: "400px", // Limit the height of the modal body
-          overflowY: "auto", // Enable scrolling within the modal
-          padding: "20px", // Add padding inside the modal content
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)", // 2 columns layout
-            gap: "10px", // Space between grid items
-          }}
-        >
-          {profile &&
-            profile.hidden_stash.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  textAlign: "center",
-                  backgroundColor: "#f9f9f9",
-                }}
-              >
-                <InventoryItem key={index} itemName={item} />
-              </div>
-            ))}
-        </div>
-      </Modal>
+      <InventoryModal isInventoryModalVisible={isStashVisible} handleModalClose={handleStashClose} profile={profile} hidden={true}/>
 
        {/* Case files Modal */}
        <CaseFilesModal caseFilesVisible={caseFilesVisible} handleCaseFilesClose={handleCaseFilesClose} profile={profile} />
