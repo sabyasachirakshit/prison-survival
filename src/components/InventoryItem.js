@@ -9,7 +9,7 @@ import CocaineImage from "../media/inventory/cocaine.png";
 import MoonshineImage from "../media/inventory/moonshine.png";
 import WeedImage from "../media/inventory/weed.png";
 
-const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
+const InventoryItem = ({ itemName, refreshProfile, hidden = false, profile }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { profile_id } = useParams();
   const baseURL = process.env.REACT_APP_LOCAL_IP;
@@ -30,6 +30,12 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false }) => {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const moveToHiddenOrInventory = async (itemName) => {
+    if(!hidden){
+      if (profile.hidden_stash.length >= 6) {
+        alert("Hidden stash limit reached. You cannot add more items."); // Display error message
+        return;
+      }
+    }
     try {
       const endpoint = hidden
         ? `http://${baseURL}:5000/api/profiles/${profile_id}/hidden_stash/to_inventory/${itemName}`
