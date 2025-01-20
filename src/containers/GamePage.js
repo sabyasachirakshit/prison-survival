@@ -264,10 +264,10 @@ function GamePage() {
       )}
 
       {/* Inventory Modal */}
-      <InventoryModal isInventoryModalVisible={isInventoryModalVisible} handleModalClose={handleModalClose} profile={profile} />
+      <InventoryModal refreshProfile={refreshProfile} isInventoryModalVisible={isInventoryModalVisible} handleModalClose={handleModalClose} profile={profile} />
 
       {/* Stash Modal */}
-      <InventoryModal isInventoryModalVisible={isStashVisible} handleModalClose={handleStashClose} profile={profile} hidden={true}/>
+      <InventoryModal refreshProfile={refreshProfile} isInventoryModalVisible={isStashVisible} handleModalClose={handleStashClose} profile={profile} hidden={true}/>
 
        {/* Case files Modal */}
        <CaseFilesModal caseFilesVisible={caseFilesVisible} handleCaseFilesClose={handleCaseFilesClose} profile={profile} />

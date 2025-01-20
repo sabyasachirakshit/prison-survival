@@ -5,6 +5,7 @@ import InventoryItem from "../InventoryItem";
 const InventoryModal = ({
   isInventoryModalVisible,
   handleModalClose,
+  refreshProfile,
   profile,
   hidden = false,
 }) => {
@@ -41,7 +42,7 @@ const InventoryModal = ({
                 backgroundColor: "#f9f9f9",
               }}
             >
-              <InventoryItem key={index} itemName={item} />
+              <InventoryItem key={index} itemName={item} refreshProfile={refreshProfile} />
             </div>
           ))
         ) : (
