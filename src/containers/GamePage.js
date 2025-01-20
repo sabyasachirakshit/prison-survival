@@ -13,10 +13,11 @@ function GamePage() {
   const [profile, setProfile] = useState(null);
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
   const [aftermath, setAftermath] = useState(null); // State to show aftermath text
+  const baseURL = process.env.REACT_APP_LOCAL_IP;
 
   useEffect(() => {
     // Fetch profile data from backend
-    fetch(`http://192.168.0.103:5000/api/profiles/${profile_id}`)
+    fetch(`http://${baseURL}:5000/api/profiles/${profile_id}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.message) {
@@ -26,7 +27,7 @@ function GamePage() {
         }
       })
       .catch((error) => console.error("Error fetching profile:", error));
-  }, [profile_id]);
+  }, [profile_id,baseURL]);
 
   const handleServeSentence = () => {
     setShowScenario(true); // Show the scenario and hide the images
