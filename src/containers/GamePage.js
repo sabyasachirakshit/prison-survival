@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Modal } from "antd";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
 import PrisonImage from "../media/prison/prison.webp";
@@ -13,6 +14,7 @@ function GamePage() {
   const [profile, setProfile] = useState(null);
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
   const [aftermath, setAftermath] = useState(null); // State to show aftermath text
+  const [isInventoryModalVisible, setIsInventoryModalVisible] = useState(false); // State for modal visibility
   const baseURL = process.env.REACT_APP_LOCAL_IP;
 
   useEffect(() => {
@@ -27,7 +29,7 @@ function GamePage() {
         }
       })
       .catch((error) => console.error("Error fetching profile:", error));
-  }, [profile_id,baseURL]);
+  }, [profile_id, baseURL]);
 
   const handleServeSentence = () => {
     setShowScenario(true); // Show the scenario and hide the images
@@ -47,6 +49,14 @@ function GamePage() {
   const handleContinue = () => {
     setShowScenario(false); // Go back to the original UI
     setAftermath(null); // Reset aftermath state
+  };
+
+  const handleInventoryClick = () => {
+    setIsInventoryModalVisible(true); // Show inventory modal
+  };
+
+  const handleModalClose = () => {
+    setIsInventoryModalVisible(false); // Hide inventory modal
   };
 
   return (
@@ -77,50 +87,51 @@ function GamePage() {
             </div>
           </div>
 
-          
-
           {!showScenario ? (
             <>
-            <div
-            className="serve-button"
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              position: "relative",
-              marginTop: 220,
-            }}
-          >
-            <button style={{ width: "50%",height:50,borderRadius:4,backgroundColor:"#6174fc",color:"white" }} onClick={handleServeSentence}>
-              <h4>Serve Sentence</h4>
-            </button>
-          </div>
-            <div className="lower" style={{ display: "flex", gap: 50, marginTop: 200 }}>
-              <div className="inventory">
-                <img src={InventoryImage} alt="Inventory" width={50} height={50} />
+              <div
+                className="serve-button"
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  position: "relative",
+                  marginTop: 220,
+                }}
+              >
+                <button
+                  style={{ width: "50%", height: 50, borderRadius: 4, backgroundColor: "#6174fc", color: "white" }}
+                  onClick={handleServeSentence}
+                >
+                  <h4>Serve Sentence</h4>
+                </button>
               </div>
-              <div className="inventory">
-                <img
-                  src={StashIcon}
-                  alt="Stash"
-                  width={50}
-                  height={55}
-                  style={{ position: "relative", top: -7 }}
-                />
+              <div className="lower" style={{ display: "flex", gap: 50, marginTop: 200 }}>
+                <div className="inventory" onClick={handleInventoryClick} style={{ cursor: "pointer" }}>
+                  <img src={InventoryImage} alt="Inventory" width={50} height={50} />
+                </div>
+                <div className="inventory">
+                  <img
+                    src={StashIcon}
+                    alt="Stash"
+                    width={50}
+                    height={55}
+                    style={{ position: "relative", top: -7 }}
+                  />
+                </div>
+                <div className="inventory">
+                  <img
+                    src={MarketIcon}
+                    alt="Market"
+                    width={50}
+                    height={57}
+                    style={{ position: "relative", top: -7 }}
+                  />
+                </div>
+                <div className="inventory">
+                  <img src={CaseFilesIcon} alt="Case Files" width={50} height={50} />
+                </div>
               </div>
-              <div className="inventory">
-                <img
-                  src={MarketIcon}
-                  alt="Market"
-                  width={50}
-                  height={57}
-                  style={{ position: "relative", top: -7 }}
-                />
-              </div>
-              <div className="inventory">
-                <img src={CaseFilesIcon} alt="Case Files" width={50} height={50} />
-              </div>
-            </div>
             </>
           ) : aftermath ? (
             <div className="aftermath" style={{ marginTop: 50, textAlign: "center" }}>
@@ -152,6 +163,31 @@ function GamePage() {
       ) : (
         <p>Profile not available for id {profile_id}</p>
       )}
+
+      {/* Inventory Modal */}
+      <Modal
+        title="Inventory"
+        visible={isInventoryModalVisible}
+        onCancel={handleModalClose}
+        footer={null}
+      >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
+          {profile && profile.inventory.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: "5px",
+                padding: "10px",
+                textAlign: "center",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      </Modal>
     </div>
   );
 }
