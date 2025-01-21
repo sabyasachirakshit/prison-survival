@@ -6,7 +6,6 @@ import PrisonImage from "../media/prison/prison.webp";
 import InventoryImage from "../media/inventory.jpg";
 import CaseFilesIcon from "../media/case_files.png";
 import MarketIcon from "../media/market_icon.png";
-import StashIcon from "../media/stash.jpg";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
 import InventoryModal from "../components/Modals/InventoryModal";
 import { Modal, Button, message, Tabs } from "antd";
@@ -50,7 +49,6 @@ function GamePage() {
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
   const [aftermath, setAftermath] = useState(null); // State to show aftermath text
   const [isInventoryModalVisible, setIsInventoryModalVisible] = useState(false); // State for modal visibility
-  const [isStashVisible, setIsStashVisible] = useState(false); // State for stash visibility
   const [caseFilesVisible, setCaseFilesVisible] = useState(false); // State for case files visibility
   const [marketItems, setMarketItems] = useState([]); // State for market items
   const [marketModalVisible, setMarketModalVisible] = useState(false); // State for market modal visibility
@@ -190,10 +188,6 @@ function GamePage() {
     setIsInventoryModalVisible(true); // Show inventory modal
   };
 
-  const handleStashClick = () => {
-    refreshProfile(); // Refresh profile data
-    setIsStashVisible(true); // Show stash modal
-  };
 
   const handleCaseFilesClick = () => {
     refreshProfile(); // Refresh profile data
@@ -204,9 +198,6 @@ function GamePage() {
     setIsInventoryModalVisible(false); // Hide inventory modal
   };
 
-  const handleStashClose = () => {
-    setIsStashVisible(false); // Hide stash modal
-  };
 
   const handleCaseFilesClose = () => {
     setCaseFilesVisible(false); // Hide case files modal
