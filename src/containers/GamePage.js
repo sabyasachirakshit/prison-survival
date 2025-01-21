@@ -149,6 +149,20 @@ function GamePage() {
       .catch((error) => console.error("Error fetching market items:", error));
   };
 
+  const refreshTradeItems = () => {
+    // Fetch market items from backend
+    fetch(`http://${baseURL}:5000/api/refresh_trade`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          setTradeItems(data); // Set the market items in state
+        }
+      })
+      .catch((error) => console.error("Error fetching market items:", error));
+  };
+
   const handleServeSentence = () => {
     setShowScenario(true); // Show the scenario and hide the images
   };
@@ -297,6 +311,9 @@ function GamePage() {
                 <b>{profile.karma}</b>
               </div>
             </div>
+
+            <button onClick={refreshMarketItems}>Refresh market</button>
+            <button onClick={refreshTradeItems}>Refresh Trade </button>
           </div>
 
           {!showScenario ? (
