@@ -10,44 +10,85 @@ import MoonshineImage from "../../media/inventory/moonshine.png";
 import PillsImage from "../../media/inventory/pills.png";
 import ExchangeLogo from "../../media/exchange.png";
 import ShankImage from "../../media/inventory/shank.jpg";
-import CocaineImage from "../../media/inventory/cocaine.png"
-import ParacetemolImage from "../../media/inventory/paracetemol.png"
-import HealingSyrupImage from "../../media/inventory/syrup.png"
-import CanofMeatImage from "../../media/inventory/can-of-meat.jpg"
-import ChipsImage from "../../media/inventory/chips.jpg"
-import PackofTeaImage from "../../media/inventory/packoftea.png"
+import CocaineImage from "../../media/inventory/cocaine.png";
+import ParacetemolImage from "../../media/inventory/paracetemol.png";
+import HealingSyrupImage from "../../media/inventory/syrup.png";
+import CanofMeatImage from "../../media/inventory/can-of-meat.jpg";
+import ChipsImage from "../../media/inventory/chips.jpg";
+import PackofTeaImage from "../../media/inventory/packoftea.png";
 import CoinImage from "../../media/coin.png";
 const { TabPane } = Tabs;
 
 const MarketModal = ({
+  fetchMarketItems,
+  refreshProfile,
+  baseURL,
   marketModalVisible,
   setMarketModalVisible,
   marketItems,
   tradeItems,
-  handleBuyItem,
   handleTradeExchange,
   profile,
   profile_id,
   hasSufficientItems,
 }) => {
-    const itemImages = {
-        Bread: BreadImage,
-        Pills: PillsImage,
-        Sweets: SweetsImage,
-        Aspirine: PillsImage,
-        "Healing Syrup":HealingSyrupImage,
-        "Can of Meat":CanofMeatImage,
-        "Pack of Tea": PackofTeaImage,
-        Cigarettes: CigarretesImage,
-        Chips:ChipsImage,
-        Paracetemol:ParacetemolImage,
-        Volga:CigarretesImage,
-        Weed: WeedImage,
-        Rocket:CigarretesImage,
-        Cocaine:CocaineImage,
-        Moonshine: MoonshineImage,
-        Shank: ShankImage,
-      };
+  const itemImages = {
+    Bread: BreadImage,
+    Pills: PillsImage,
+    Sweets: SweetsImage,
+    Aspirine: PillsImage,
+    "Healing Syrup": HealingSyrupImage,
+    "Can of Meat": CanofMeatImage,
+    "Pack of Tea": PackofTeaImage,
+    Cigarettes: CigarretesImage,
+    Chips: ChipsImage,
+    Paracetemol: ParacetemolImage,
+    Volga: CigarretesImage,
+    Weed: WeedImage,
+    Rocket: CigarretesImage,
+    Cocaine: CocaineImage,
+    Moonshine: MoonshineImage,
+    Shank: ShankImage,
+  };
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  function hasSufficientItems(exchange, profile) {
+    if (Array.isArray(exchange)) {
+      // Check if inventory contains all items in the exchange array
+      return exchange.every((item) => profile.inventory.includes(item));
+    } else if (typeof exchange === "number") {
+      // Handle numeric exchange (e.g., coins)
+      return profile.coins >= exchange; // Assuming 'coins' is part of inventory
+    }
+    return false;
+  }
+  
+  const handleBuyItem = async (item) => {
+    try {
+      const response = await fetch(
+        `http://${baseURL}:5000/api/market/buy/${profile_id}/${item.market_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.message || "Purchase failed. Insufficient coins.");
+        return;
+      }
+
+      await sleep(100); // Add a small delay if needed
+      fetchMarketItems();
+      refreshProfile();
+    } catch (error) {
+      console.error("Error purchasing item:", error);
+      alert("An error occurred during the purchase.");
+    }
+  };
   return (
     <Modal
       title="Market"
@@ -153,7 +194,11 @@ const MarketModal = ({
                   ) : (
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <img
-                        src={typeof item.name === "number" ? CoinImage : itemImages[item.name]}
+                        src={
+                          typeof item.name === "number"
+                            ? CoinImage
+                            : itemImages[item.name]
+                        }
                         alt={item.name}
                         width={50}
                         height={50}

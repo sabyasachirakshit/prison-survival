@@ -164,44 +164,8 @@ function GamePage() {
   const handleCaseFilesClose = () => {
     setCaseFilesVisible(false); // Hide case files modal
   };
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const handleBuyItem = async (item) => {
-    try {
-      const response = await fetch(
-        `http://${baseURL}:5000/api/market/buy/${profile_id}/${item.market_id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
 
-      const data = await response.json();
-      if (!response.ok) {
-        alert(data.message || "Purchase failed. Insufficient coins.");
-        return;
-      }
-
-      await sleep(100); // Add a small delay if needed
-      fetchMarketItems();
-      refreshProfile();
-    } catch (error) {
-      console.error("Error purchasing item:", error);
-      alert("An error occurred during the purchase.");
-    }
-  };
-
-  function hasSufficientItems(exchange, profile) {
-    if (Array.isArray(exchange)) {
-      // Check if inventory contains all items in the exchange array
-      return exchange.every((item) => profile.inventory.includes(item));
-    } else if (typeof exchange === "number") {
-      // Handle numeric exchange (e.g., coins)
-      return profile.coins >= exchange; // Assuming 'coins' is part of inventory
-    }
-    return false;
-  }
+ 
 
   const handleTradeExchange = async (profile_id, trade_id) => {
     try {
@@ -221,7 +185,7 @@ function GamePage() {
         return;
       }
 
-      await sleep(100); // Add a small delay if needed
+      // await sleep(100); // Add a small delay if needed
       fetchTradeItems();
       refreshProfile();
     } catch (error) {
@@ -376,15 +340,17 @@ function GamePage() {
       />
       {/* Market Modal */}
       <MarketModal
+        fetchMarketItems={fetchMarketItems}
+        baseURL={baseURL}
+        refreshProfile={refreshProfile}
         marketModalVisible={marketModalVisible}
         setMarketModalVisible={setMarketModalVisible}
         marketItems={marketItems}
         tradeItems={tradeItems}
-        handleBuyItem={handleBuyItem}
         handleTradeExchange={handleTradeExchange}
         profile={profile}
         profile_id={profile_id}
-        hasSufficientItems={hasSufficientItems}
+        
       />
       ;
     </div>
