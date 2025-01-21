@@ -9,16 +9,26 @@ import MarketIcon from "../media/market_icon.png";
 import StashIcon from "../media/stash.jpg";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
 import InventoryModal from "../components/Modals/InventoryModal";
-import { Modal, Button, message,Tabs } from "antd";
+import { Modal, Button, message, Tabs } from "antd";
 import BreadImage from "../media/inventory/bread.png";
+import CigarretesImage from "../media/inventory/cigarettes.png";
 import SweetsImage from "../media/inventory/sweets.jpg";
+import WeedImage from "../media/inventory/weed.png";
+import MoonshineImage from "../media/inventory/moonshine.png";
 import PillsImage from "../media/inventory/pills.png";
+import ExchangeLogo from "../media/exchange.png";
+import ShankImage from "../media/inventory/shank.jpg"
+
 const { TabPane } = Tabs;
 function GamePage() {
   const itemImages = {
     Bread: BreadImage,
     Pills: PillsImage,
     Sweets: SweetsImage,
+    Cigarettes: CigarretesImage,
+    Weed: WeedImage,
+    Moonshine: MoonshineImage,
+    Shank:ShankImage
   };
   const { profile_id } = useParams(); // Get profile_id from the URL
   const [profile, setProfile] = useState(null);
@@ -29,6 +39,7 @@ function GamePage() {
   const [caseFilesVisible, setCaseFilesVisible] = useState(false); // State for case files visibility
   const [marketItems, setMarketItems] = useState([]); // State for market items
   const [marketModalVisible, setMarketModalVisible] = useState(false); // State for market modal visibility
+  const [tradeItems, setTradeItems] = useState([]); // State for trade items
   const baseURL = process.env.REACT_APP_LOCAL_IP;
 
   useEffect(() => {
@@ -55,6 +66,18 @@ function GamePage() {
         }
       })
       .catch((error) => console.error("Error fetching market items:", error));
+
+    fetch(`http://${baseURL}:5000/api/trade`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          console.log(data);
+          setTradeItems(data);
+        }
+      })
+      .catch((error) => console.error("Error fetching trade items:", error));
   }, [profile_id, baseURL]);
 
   const refreshProfile = () => {
@@ -427,7 +450,88 @@ function GamePage() {
 
           {/* Tab for Trade Goods */}
           <TabPane tab="Trade Goods" key="2">
-            trade goods
+            {tradeItems.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  display: "flex",
+
+                  textAlign: "center",
+                  backgroundColor: "#f9f9f9",
+                  marginBottom: "10px",
+                }}
+              >
+                <img
+                  src={itemImages[item.name]}
+                  alt={item.name}
+                  width={50}
+                  height={50}
+                  style={{ marginBottom: "10px" }}
+                />
+                <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
+                  {item.name}
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <img
+                    src={ExchangeLogo} // Replace with the actual exchange logo path
+                    alt="Exchange Logo"
+                    width={30}
+                    height={30}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <div style={{ textAlign: "left" }}>
+                    {Array.isArray(item.exchange) ? (
+                      <div>
+                        {item.exchange.map((exchangeItem, idx) => (
+                          <span key={idx} style={{ display: "block" }}>
+                            {exchangeItem}{" "}
+                            {itemImages[exchangeItem] && (
+                              <img
+                                src={itemImages[exchangeItem]}
+                                alt={exchangeItem}
+                                width={20}
+                                height={20}
+                                style={{ marginLeft: "5px" }}
+                              />
+                            )}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <div>
+                        {item.exchange}{" "}
+                        <img
+                          style={{ position: "relative", top: 5 }}
+                          src={CoinImage}
+                          alt="Coins"
+                          width={21}
+                          height={21}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <Button
+                  type="primary"
+                  
+                  style={{ marginTop: 10, padding: "5px", cursor: "pointer" }}
+                >
+                  Trade
+                </Button>
+              </div>
+            ))}
           </TabPane>
         </Tabs>
       </Modal>
