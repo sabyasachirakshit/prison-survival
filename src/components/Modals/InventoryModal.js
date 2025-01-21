@@ -9,14 +9,13 @@ const InventoryModal = ({
   handleModalClose,
   refreshProfile,
   profile,
-  hidden = false,
 }) => {
   const inventoryItems = profile?.inventory || [];
   const stashItems = profile?.hidden_stash || [];
 
   return (
     <Modal
-      title={hidden ? "Hidden Stash" : "Inventory"}
+      title={"Your Inventory & Stash"}
       visible={isInventoryModalVisible}
       onCancel={handleModalClose}
       footer={null}

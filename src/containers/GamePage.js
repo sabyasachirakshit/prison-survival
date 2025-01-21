@@ -357,15 +357,7 @@ function GamePage() {
                     height={50}
                   />
                 </div>
-                <div className="inventory" onClick={handleStashClick}>
-                  <img
-                    src={StashIcon}
-                    alt="Stash"
-                    width={50}
-                    height={55}
-                    style={{ position: "relative", top: -7 }}
-                  />
-                </div>
+                
                 <div
                   className="market"
                   onClick={() => setMarketModalVisible(true)}
@@ -448,21 +440,14 @@ function GamePage() {
       ) : (
         <p>Profile not available for id {profile_id}</p>
       )}
-      {/* Inventory Modal */}
+      {/* Inventory & stash Modal */}
       <InventoryModal
         refreshProfile={refreshProfile}
         isInventoryModalVisible={isInventoryModalVisible}
         handleModalClose={handleModalClose}
         profile={profile}
       />
-      {/* Stash Modal */}
-      <InventoryModal
-        refreshProfile={refreshProfile}
-        isInventoryModalVisible={isStashVisible}
-        handleModalClose={handleStashClose}
-        profile={profile}
-        hidden={true}
-      />
+
       {/* Case files Modal */}
       <CaseFilesModal
         caseFilesVisible={caseFilesVisible}
