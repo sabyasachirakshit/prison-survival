@@ -107,6 +107,19 @@ function GamePage() {
       .catch((error) => console.error("Error fetching market items:", error));
   };
 
+  const fetchTradeItems = () => {
+    fetch(`http://${baseURL}:5000/api/trade`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          setTradeItems(data);
+        }
+      })
+      .catch((error) => console.error("Error fetching trade items:", error));
+  };
+
   const refreshMarketItems = () => {
     // Fetch market items from backend
     fetch(`http://${baseURL}:5000/api/refresh_market`)
@@ -206,6 +219,33 @@ function GamePage() {
     }
     return false;
   }
+
+  const handleTradeExchange = async (profile_id, trade_id) => {
+    try {
+      const response = await fetch(
+        `http://${baseURL}:5000/api/trade/${profile_id}/${trade_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.message || "Trade failed");
+        return;
+      }
+
+      await sleep(100); // Add a small delay if needed
+      fetchTradeItems();
+      refreshProfile();
+    } catch (error) {
+      console.error("Error trading items:", error);
+      message.error("An error occurred during the trade.");
+    }
+  };
   
 
   return (
@@ -542,6 +582,7 @@ function GamePage() {
                   <Button
                     type="primary"
                     disabled={!canTrade} // Disable the button if cannot trade
+                    onClick={() => {handleTradeExchange(profile_id,item.trade_id)}}
                     style={{
                       marginTop: 10,
                       padding: "5px",
