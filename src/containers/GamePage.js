@@ -9,8 +9,18 @@ import MarketIcon from "../media/market_icon.png";
 import StashIcon from "../media/stash.jpg";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
 import InventoryModal from "../components/Modals/InventoryModal";
+import { Modal } from "antd";
+import BreadImage from "../media/inventory/bread.png";
+import SweetsImage from "../media/inventory/sweets.jpg";
+import PillsImage from "../media/inventory/pills.png";
+
 
 function GamePage() {
+  const itemImages = {
+    Bread: BreadImage,
+    Pills: PillsImage,
+    Sweets: SweetsImage,
+  };
   const { profile_id } = useParams(); // Get profile_id from the URL
   const [profile, setProfile] = useState(null);
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
@@ -18,6 +28,8 @@ function GamePage() {
   const [isInventoryModalVisible, setIsInventoryModalVisible] = useState(false); // State for modal visibility
   const [isStashVisible, setIsStashVisible] = useState(false); // State for stash visibility
   const [caseFilesVisible, setCaseFilesVisible] = useState(false); // State for case files visibility
+  const [marketItems, setMarketItems] = useState([]); // State for market items
+  const [marketModalVisible, setMarketModalVisible] = useState(false); // State for market modal visibility
   const baseURL = process.env.REACT_APP_LOCAL_IP;
 
   useEffect(() => {
@@ -40,7 +52,7 @@ function GamePage() {
       if (data.message) {
         console.error(data.message);
       } else {
-        console.log("Market items:", data);
+        setMarketItems(data);
       }
     })
     .catch((error) => console.error("Error fetching market items:", error));
@@ -68,7 +80,7 @@ function GamePage() {
         if (data.message) {
           console.error(data.message);
         } else {
-          console.log("Market items:", data);
+          setMarketItems(data); // Set the market items in state
         }
       })
       .catch((error) => console.error("Error fetching market items:", error));
@@ -210,7 +222,7 @@ function GamePage() {
                     style={{ position: "relative", top: -7 }}
                   />
                 </div>
-                <div className="market">
+                <div className="market" onClick={() => setMarketModalVisible(true)}>
                   <img
                     src={MarketIcon}
                     alt="Market"
@@ -298,6 +310,31 @@ function GamePage() {
 
        {/* Case files Modal */}
        <CaseFilesModal caseFilesVisible={caseFilesVisible} handleCaseFilesClose={handleCaseFilesClose} profile={profile} />
+      
+      {/* Market Modal */}
+      <Modal 
+      title="Market"
+      visible={marketModalVisible}
+      onCancel={() => setMarketModalVisible(false)}
+      footer={null}
+      bodyStyle={{
+        maxHeight: "400px",
+        overflowY: "auto",
+        padding: "20px",
+      }}
+      >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
+          {marketItems.map((item, index) => (
+            <div key={index} style={{ border: "1px solid #ddd", borderRadius: "5px", padding: "10px", textAlign: "center", backgroundColor: "#f9f9f9" }}>
+              <img src={itemImages[item.name]} alt={item.name} width={50} height={50} />
+              <div>{item.name}</div>
+              <div>Price: {item.price} <img style={{position:"relative",top:5}} src={CoinImage} alt={item.name} width={21} height={21} /></div>
+              <button style={{ marginTop: 10, padding: "5px", cursor: "pointer" }}>Buy</button>
+            </div>
+          ))}
+        </div>
+      </Modal>
+    
     </div>
   );
 }
