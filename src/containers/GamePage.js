@@ -143,6 +143,7 @@ function GamePage() {
         if (data.message) {
           console.error(data.message);
         } else {
+          alert("Market has new items")
           setMarketItems(data); // Set the market items in state
         }
       })
