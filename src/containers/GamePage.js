@@ -18,6 +18,12 @@ import MoonshineImage from "../media/inventory/moonshine.png";
 import PillsImage from "../media/inventory/pills.png";
 import ExchangeLogo from "../media/exchange.png";
 import ShankImage from "../media/inventory/shank.jpg";
+import CocaineImage from "../media/inventory/cocaine.png"
+import ParacetemolImage from "../media/inventory/paracetemol.png"
+import HealingSyrupImage from "../media/inventory/syrup.png"
+import CanofMeatImage from "../media/inventory/can-of-meat.jpg"
+import ChipsImage from "../media/inventory/chips.jpg"
+import PackofTeaImage from "../media/inventory/packoftea.png"
 
 const { TabPane } = Tabs;
 function GamePage() {
@@ -25,8 +31,17 @@ function GamePage() {
     Bread: BreadImage,
     Pills: PillsImage,
     Sweets: SweetsImage,
+    Aspirine: PillsImage,
+    "Healing Syrup":HealingSyrupImage,
+    "Can of Meat":CanofMeatImage,
+    "Pack of Tea": PackofTeaImage,
     Cigarettes: CigarretesImage,
+    Chips:ChipsImage,
+    Paracetemol:ParacetemolImage,
+    Volga:CigarretesImage,
     Weed: WeedImage,
+    Rocket:CigarretesImage,
+    Cocaine:CocaineImage,
     Moonshine: MoonshineImage,
     Shank: ShankImage,
   };
@@ -542,7 +557,7 @@ function GamePage() {
                     ) : (
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <img
-                          src={itemImages[item.name]}
+                          src={typeof item.name === "number" ? CoinImage : itemImages[item.name]}
                           alt={item.name}
                           width={50}
                           height={50}
