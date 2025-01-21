@@ -545,7 +545,7 @@ function GamePage() {
                       borderRadius: "5px",
                       padding: "10px",
                       display: "flex",
-                      flexDirection: "column",
+                      
                       alignItems: "center",
                       backgroundColor: "#f9f9f9",
                       marginBottom: "10px",
@@ -558,6 +558,7 @@ function GamePage() {
                           style={{
                             display: "flex",
                             alignItems: "center",
+                            flexDirection:"column",
                             marginBottom: "5px",
                           }}
                         >
