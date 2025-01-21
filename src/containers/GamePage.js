@@ -17,7 +17,7 @@ import WeedImage from "../media/inventory/weed.png";
 import MoonshineImage from "../media/inventory/moonshine.png";
 import PillsImage from "../media/inventory/pills.png";
 import ExchangeLogo from "../media/exchange.png";
-import ShankImage from "../media/inventory/shank.jpg"
+import ShankImage from "../media/inventory/shank.jpg";
 
 const { TabPane } = Tabs;
 function GamePage() {
@@ -28,7 +28,7 @@ function GamePage() {
     Cigarettes: CigarretesImage,
     Weed: WeedImage,
     Moonshine: MoonshineImage,
-    Shank:ShankImage
+    Shank: ShankImage,
   };
   const { profile_id } = useParams(); // Get profile_id from the URL
   const [profile, setProfile] = useState(null);
@@ -195,6 +195,18 @@ function GamePage() {
       message.error("An error occurred during the purchase.");
     }
   };
+
+  function hasSufficientItems(exchange, profile) {
+    if (Array.isArray(exchange)) {
+      // Check if inventory contains all items in the exchange array
+      return exchange.every(item => profile.inventory.includes(item));
+    } else if (typeof exchange === "number") {
+      // Handle numeric exchange (e.g., coins)
+      return profile.coins >= exchange; // Assuming 'coins' is part of inventory
+    }
+    return false;
+  }
+  
 
   return (
     <div
@@ -450,88 +462,97 @@ function GamePage() {
 
           {/* Tab for Trade Goods */}
           <TabPane tab="Trade Goods" key="2">
-            {tradeItems.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  display: "flex",
-
-                  textAlign: "center",
-                  backgroundColor: "#f9f9f9",
-                  marginBottom: "10px",
-                }}
-              >
-                <img
-                  src={itemImages[item.name]}
-                  alt={item.name}
-                  width={50}
-                  height={50}
-                  style={{ marginBottom: "10px" }}
-                />
-                <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
-                  {item.name}
-                </div>
-
+            {tradeItems && tradeItems.map((item, index) => {
+              const canTrade = hasSufficientItems(
+                item.exchange,
+                profile
+              );
+              return (
                 <div
+                  key={index}
                   style={{
+                    border: "1px solid #ddd",
+                    borderRadius: "5px",
+                    padding: "10px",
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    textAlign: "center",
+                    backgroundColor: "#f9f9f9",
                     marginBottom: "10px",
                   }}
                 >
                   <img
-                    src={ExchangeLogo} // Replace with the actual exchange logo path
-                    alt="Exchange Logo"
-                    width={30}
-                    height={30}
-                    style={{ marginRight: "10px" }}
+                    src={itemImages[item.name]}
+                    alt={item.name}
+                    width={50}
+                    height={50}
+                    style={{ marginBottom: "10px" }}
                   />
-                  <div style={{ textAlign: "left" }}>
-                    {Array.isArray(item.exchange) ? (
-                      <div>
-                        {item.exchange.map((exchangeItem, idx) => (
-                          <span key={idx} style={{ display: "block" }}>
-                            {exchangeItem}{" "}
-                            {itemImages[exchangeItem] && (
-                              <img
-                                src={itemImages[exchangeItem]}
-                                alt={exchangeItem}
-                                width={20}
-                                height={20}
-                                style={{ marginLeft: "5px" }}
-                              />
-                            )}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <div>
-                        {item.exchange}{" "}
-                        <img
-                          style={{ position: "relative", top: 5 }}
-                          src={CoinImage}
-                          alt="Coins"
-                          width={21}
-                          height={21}
-                        />
-                      </div>
-                    )}
+                  <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
+                    {item.name}
                   </div>
-                </div>
 
-                <Button
-                  type="primary"
-                  
-                  style={{ marginTop: 10, padding: "5px", cursor: "pointer" }}
-                >
-                  Trade
-                </Button>
-              </div>
-            ))}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <img
+                      src={ExchangeLogo} // Replace with the actual exchange logo path
+                      alt="Exchange Logo"
+                      width={30}
+                      height={30}
+                      style={{ marginRight: "10px" }}
+                    />
+                    <div style={{ textAlign: "left" }}>
+                      {Array.isArray(item.exchange) ? (
+                        <div>
+                          {item.exchange.map((exchangeItem, idx) => (
+                            <span key={idx} style={{ display: "block" }}>
+                              {exchangeItem}{" "}
+                              {itemImages[exchangeItem] && (
+                                <img
+                                  src={itemImages[exchangeItem]}
+                                  alt={exchangeItem}
+                                  width={20}
+                                  height={20}
+                                  style={{ marginLeft: "5px" }}
+                                />
+                              )}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <div>
+                          {item.exchange}{" "}
+                          <img
+                            style={{ position: "relative", top: 5 }}
+                            src={CoinImage}
+                            alt="Coins"
+                            width={21}
+                            height={21}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <Button
+                    type="primary"
+                    disabled={!canTrade} // Disable the button if cannot trade
+                    style={{
+                      marginTop: 10,
+                      padding: "5px",
+                      cursor: canTrade ? "pointer" : "not-allowed",
+                    }}
+                  >
+                    {canTrade ? "Trade" : "Cannot Trade"}
+                  </Button>
+                </div>
+              );
+            })}
           </TabPane>
         </Tabs>
       </Modal>
