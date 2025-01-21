@@ -344,7 +344,7 @@ function GamePage() {
               </div>
               <div
                 className="lower"
-                style={{ display: "flex", gap: 50, marginTop: 200 }}
+                style={{ display: "flex", gap: 100, marginTop: 200 }}
               >
                 <div
                   className="inventory"
