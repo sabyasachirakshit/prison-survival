@@ -5,16 +5,16 @@ import { isMobile } from 'react-device-detect';
 
 function MainPage() {
   const [profiles, setProfiles] = useState([]);
-
+  const baseURL = process.env.REACT_APP_LOCAL_IP;
   useEffect(() => {
-    fetch('http://192.168.0.103:5000/api/profiles')
+    fetch(`http://${baseURL}:5000/api/profiles`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched profiles data:", data); // Log profiles data
         setProfiles(data);
       })
       .catch((error) => console.error('Error fetching profiles:', error));
-  }, []);
+  }, [baseURL]);
 
   return (
     <div style={{ textAlign: 'center' }}>
