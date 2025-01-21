@@ -185,7 +185,7 @@ function GamePage() {
   const handleBuyItem = async (item) => {
     try {
       const response = await fetch(
-        `http://${baseURL}:5000/api/market/buy/${profile_id}/${item.name}`,
+        `http://${baseURL}:5000/api/market/buy/${profile_id}/${item.market_id}`,
         {
           method: "POST",
           headers: {
