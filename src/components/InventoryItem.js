@@ -8,6 +8,13 @@ import SweetsImage from "../media/inventory/sweets.jpg";
 import CocaineImage from "../media/inventory/cocaine.png";
 import MoonshineImage from "../media/inventory/moonshine.png";
 import WeedImage from "../media/inventory/weed.png";
+import CigarretesImage from "../media/inventory/cigarettes.png";
+import ShankImage from "../media/inventory/shank.jpg";
+import ParacetemolImage from "../media/inventory/paracetemol.png"
+import HealingSyrupImage from "../media/inventory/syrup.png"
+import CanofMeatImage from "../media/inventory/can-of-meat.jpg"
+import ChipsImage from "../media/inventory/chips.jpg"
+import PackofTeaImage from "../media/inventory/packoftea.png"
 
 const InventoryItem = ({ itemName, refreshProfile, hidden = false, profile }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -16,12 +23,21 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false, profile }) =>
 
   const itemImages = {
     Bread: BreadImage,
-    Cigarettes: CigarettesImage,
     Pills: PillsImage,
     Sweets: SweetsImage,
-    Cocaine: CocaineImage,
-    Moonshine: MoonshineImage,
+    Aspirine: PillsImage,
+    "Healing Syrup":HealingSyrupImage,
+    "Can of Meat":CanofMeatImage,
+    "Pack of Tea": PackofTeaImage,
+    Cigarettes: CigarretesImage,
+    Chips:ChipsImage,
+    Paracetemol:ParacetemolImage,
+    Volga:CigarretesImage,
     Weed: WeedImage,
+    Rocket:CigarretesImage,
+    Cocaine:CocaineImage,
+    Moonshine: MoonshineImage,
+    Shank: ShankImage,
   };
 
   const showModal = () => setIsModalVisible(true);
