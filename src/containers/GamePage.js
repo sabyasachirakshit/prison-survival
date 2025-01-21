@@ -8,10 +8,7 @@ import CaseFilesIcon from "../media/case_files.png";
 import MarketIcon from "../media/market_icon.png";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
 import InventoryModal from "../components/Modals/InventoryModal";
-import { message, Tabs } from "antd";
 import MarketModal from "../components/Modals/MarketModal";
-
-const { TabPane } = Tabs;
 function GamePage() {
   
   const { profile_id } = useParams(); // Get profile_id from the URL
@@ -196,7 +193,7 @@ function GamePage() {
       refreshProfile();
     } catch (error) {
       console.error("Error purchasing item:", error);
-      message.error("An error occurred during the purchase.");
+      alert("An error occurred during the purchase.");
     }
   };
 
@@ -234,7 +231,7 @@ function GamePage() {
       refreshProfile();
     } catch (error) {
       console.error("Error trading items:", error);
-      message.error("An error occurred during the trade.");
+      alert("An error occurred during the trade.");
     }
   };
 
