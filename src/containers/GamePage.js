@@ -32,6 +32,18 @@ function GamePage() {
         }
       })
       .catch((error) => console.error("Error fetching profile:", error));
+
+      // Fetch market items from backend
+    fetch(`http://${baseURL}:5000/api/market`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message) {
+        console.error(data.message);
+      } else {
+        console.log("Market items:", data);
+      }
+    })
+    .catch((error) => console.error("Error fetching market items:", error));
   }, [profile_id, baseURL]);
 
   const refreshProfile = () => {
@@ -47,6 +59,21 @@ function GamePage() {
       })
       .catch((error) => console.error("Error fetching profile:", error));
   };
+
+  const refreshMarketItems = () => {
+    // Fetch market items from backend
+    fetch(`http://${baseURL}:5000/api/refresh_market`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          console.log("Market items:", data);
+        }
+      })
+      .catch((error) => console.error("Error fetching market items:", error));
+  };
+
 
   const handleServeSentence = () => {
     setShowScenario(true); // Show the scenario and hide the images
