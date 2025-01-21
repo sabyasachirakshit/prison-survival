@@ -9,11 +9,10 @@ import MarketIcon from "../media/market_icon.png";
 import StashIcon from "../media/stash.jpg";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
 import InventoryModal from "../components/Modals/InventoryModal";
-import { Modal } from "antd";
+import { Modal, Button, message } from "antd";
 import BreadImage from "../media/inventory/bread.png";
 import SweetsImage from "../media/inventory/sweets.jpg";
 import PillsImage from "../media/inventory/pills.png";
-
 
 function GamePage() {
   const itemImages = {
@@ -45,17 +44,17 @@ function GamePage() {
       })
       .catch((error) => console.error("Error fetching profile:", error));
 
-      // Fetch market items from backend
+    // Fetch market items from backend
     fetch(`http://${baseURL}:5000/api/market`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.message) {
-        console.error(data.message);
-      } else {
-        setMarketItems(data);
-      }
-    })
-    .catch((error) => console.error("Error fetching market items:", error));
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          setMarketItems(data);
+        }
+      })
+      .catch((error) => console.error("Error fetching market items:", error));
   }, [profile_id, baseURL]);
 
   const refreshProfile = () => {
@@ -72,6 +71,19 @@ function GamePage() {
       .catch((error) => console.error("Error fetching profile:", error));
   };
 
+  const fetchMarketItems = () => {
+    fetch(`http://${baseURL}:5000/api/market`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.error(data.message);
+        } else {
+          setMarketItems(data);
+        }
+      })
+      .catch((error) => console.error("Error fetching market items:", error));
+  };
+
   const refreshMarketItems = () => {
     // Fetch market items from backend
     fetch(`http://${baseURL}:5000/api/refresh_market`)
@@ -85,7 +97,6 @@ function GamePage() {
       })
       .catch((error) => console.error("Error fetching market items:", error));
   };
-
 
   const handleServeSentence = () => {
     setShowScenario(true); // Show the scenario and hide the images
@@ -133,6 +144,30 @@ function GamePage() {
 
   const handleCaseFilesClose = () => {
     setCaseFilesVisible(false); // Hide case files modal
+  };
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const handleBuyItem = async (item) => {
+    try {
+      const response = await fetch(
+        `http://${baseURL}:5000/api/market/buy/${profile_id}/${item.name}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      message.success(`${item.name} purchased successfully!`);
+      await sleep(100); // Add a small delay if needed
+      fetchMarketItems();
+      refreshProfile();
+      
+    } catch (error) {
+      console.error("Error purchasing item:", error);
+      message.error("An error occurred during the purchase.");
+    }
   };
 
   return (
@@ -222,7 +257,10 @@ function GamePage() {
                     style={{ position: "relative", top: -7 }}
                   />
                 </div>
-                <div className="market" onClick={() => setMarketModalVisible(true)}>
+                <div
+                  className="market"
+                  onClick={() => setMarketModalVisible(true)}
+                >
                   <img
                     src={MarketIcon}
                     alt="Market"
@@ -303,38 +341,87 @@ function GamePage() {
       )}
 
       {/* Inventory Modal */}
-      <InventoryModal refreshProfile={refreshProfile} isInventoryModalVisible={isInventoryModalVisible} handleModalClose={handleModalClose} profile={profile} />
+      <InventoryModal
+        refreshProfile={refreshProfile}
+        isInventoryModalVisible={isInventoryModalVisible}
+        handleModalClose={handleModalClose}
+        profile={profile}
+      />
 
       {/* Stash Modal */}
-      <InventoryModal refreshProfile={refreshProfile} isInventoryModalVisible={isStashVisible} handleModalClose={handleStashClose} profile={profile} hidden={true}/>
+      <InventoryModal
+        refreshProfile={refreshProfile}
+        isInventoryModalVisible={isStashVisible}
+        handleModalClose={handleStashClose}
+        profile={profile}
+        hidden={true}
+      />
 
-       {/* Case files Modal */}
-       <CaseFilesModal caseFilesVisible={caseFilesVisible} handleCaseFilesClose={handleCaseFilesClose} profile={profile} />
-      
+      {/* Case files Modal */}
+      <CaseFilesModal
+        caseFilesVisible={caseFilesVisible}
+        handleCaseFilesClose={handleCaseFilesClose}
+        profile={profile}
+      />
+
       {/* Market Modal */}
-      <Modal 
-      title="Market"
-      visible={marketModalVisible}
-      onCancel={() => setMarketModalVisible(false)}
-      footer={null}
-      bodyStyle={{
-        maxHeight: "400px",
-        overflowY: "auto",
-        padding: "20px",
-      }}
+      <Modal
+        title="Market"
+        visible={marketModalVisible}
+        onCancel={() => setMarketModalVisible(false)}
+        footer={null}
+        bodyStyle={{
+          maxHeight: "400px",
+          overflowY: "auto",
+          padding: "20px",
+        }}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "10px",
+          }}
+        >
           {marketItems.map((item, index) => (
-            <div key={index} style={{ border: "1px solid #ddd", borderRadius: "5px", padding: "10px", textAlign: "center", backgroundColor: "#f9f9f9" }}>
-              <img src={itemImages[item.name]} alt={item.name} width={50} height={50} />
+            <div
+              key={index}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: "5px",
+                padding: "10px",
+                textAlign: "center",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              <img
+                src={itemImages[item.name]}
+                alt={item.name}
+                width={50}
+                height={50}
+              />
               <div>{item.name}</div>
-              <div>Price: {item.price} <img style={{position:"relative",top:5}} src={CoinImage} alt={item.name} width={21} height={21} /></div>
-              <button style={{ marginTop: 10, padding: "5px", cursor: "pointer" }}>Buy</button>
+              <div>
+                Price: {item.price}{" "}
+                <img
+                  style={{ position: "relative", top: 5 }}
+                  src={CoinImage}
+                  alt={item.name}
+                  width={21}
+                  height={21}
+                />
+              </div>
+              <Button
+                type="primary"
+                onClick={() => handleBuyItem(item)}
+                style={{ marginTop: 10, padding: "5px", cursor: "pointer" }}
+              >
+                Buy
+              </Button>
             </div>
           ))}
         </div>
       </Modal>
-    
     </div>
   );
 }
