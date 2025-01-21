@@ -212,7 +212,7 @@ function GamePage() {
   function hasSufficientItems(exchange, profile) {
     if (Array.isArray(exchange)) {
       // Check if inventory contains all items in the exchange array
-      return exchange.every(item => profile.inventory.includes(item));
+      return exchange.every((item) => profile.inventory.includes(item));
     } else if (typeof exchange === "number") {
       // Handle numeric exchange (e.g., coins)
       return profile.coins >= exchange; // Assuming 'coins' is part of inventory
@@ -246,7 +246,6 @@ function GamePage() {
       message.error("An error occurred during the trade.");
     }
   };
-  
 
   return (
     <div
@@ -502,98 +501,122 @@ function GamePage() {
 
           {/* Tab for Trade Goods */}
           <TabPane tab="Trade Goods" key="2">
-            {tradeItems && tradeItems.map((item, index) => {
-              const canTrade = hasSufficientItems(
-                item.exchange,
-                profile
-              );
-              return (
-                <div
-                  key={index}
-                  style={{
-                    border: "1px solid #ddd",
-                    borderRadius: "5px",
-                    padding: "10px",
-                    display: "flex",
-                    textAlign: "center",
-                    backgroundColor: "#f9f9f9",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <img
-                    src={itemImages[item.name]}
-                    alt={item.name}
-                    width={50}
-                    height={50}
-                    style={{ marginBottom: "10px" }}
-                  />
-                  <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
-                    {item.name}
-                  </div>
+            {tradeItems &&
+              tradeItems.map((item, index) => {
+                const canTrade = hasSufficientItems(item.exchange, profile);
 
+                return (
                   <div
+                    key={index}
                     style={{
+                      border: "1px solid #ddd",
+                      borderRadius: "5px",
+                      padding: "10px",
                       display: "flex",
+                      flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      backgroundColor: "#f9f9f9",
                       marginBottom: "10px",
                     }}
                   >
-                    <img
-                      src={ExchangeLogo} // Replace with the actual exchange logo path
-                      alt="Exchange Logo"
-                      width={30}
-                      height={30}
-                      style={{ marginRight: "10px" }}
-                    />
-                    <div style={{ textAlign: "left" }}>
-                      {Array.isArray(item.exchange) ? (
-                        <div>
-                          {item.exchange.map((exchangeItem, idx) => (
-                            <span key={idx} style={{ display: "block" }}>
-                              {exchangeItem}{" "}
-                              {itemImages[exchangeItem] && (
-                                <img
-                                  src={itemImages[exchangeItem]}
-                                  alt={exchangeItem}
-                                  width={20}
-                                  height={20}
-                                  style={{ marginLeft: "5px" }}
-                                />
-                              )}
-                            </span>
-                          ))}
-                        </div>
-                      ) : (
-                        <div>
-                          {item.exchange}{" "}
+                    {Array.isArray(item.name) ? (
+                      item.name.map((name, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginBottom: "5px",
+                          }}
+                        >
                           <img
-                            style={{ position: "relative", top: 5 }}
-                            src={CoinImage}
-                            alt="Coins"
-                            width={21}
-                            height={21}
+                            src={itemImages[name]}
+                            alt={name}
+                            width={50}
+                            height={50}
+                            style={{ marginRight: "10px" }}
                           />
+                          <div style={{ fontWeight: "bold" }}>{name}</div>
                         </div>
-                      )}
-                    </div>
-                  </div>
+                      ))
+                    ) : (
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <img
+                          src={itemImages[item.name]}
+                          alt={item.name}
+                          width={50}
+                          height={50}
+                          style={{ marginRight: "10px" }}
+                        />
+                        <div style={{ fontWeight: "bold" }}>{item.name}</div>
+                      </div>
+                    )}
 
-                  <Button
-                    type="primary"
-                    disabled={!canTrade} // Disable the button if cannot trade
-                    onClick={() => {handleTradeExchange(profile_id,item.trade_id)}}
-                    style={{
-                      marginTop: 10,
-                      padding: "5px",
-                      cursor: canTrade ? "pointer" : "not-allowed",
-                    }}
-                  >
-                    {canTrade ? "Trade" : "Cannot Trade"}
-                  </Button>
-                </div>
-              );
-            })}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <img
+                        src={ExchangeLogo} // Replace with the actual exchange logo path
+                        alt="Exchange Logo"
+                        width={30}
+                        height={30}
+                        style={{ marginRight: "10px" }}
+                      />
+                      <div style={{ textAlign: "left" }}>
+                        {Array.isArray(item.exchange) ? (
+                          <div>
+                            {item.exchange.map((exchangeItem, idx) => (
+                              <span key={idx} style={{ display: "block" }}>
+                                {exchangeItem}{" "}
+                                {itemImages[exchangeItem] && (
+                                  <img
+                                    src={itemImages[exchangeItem]}
+                                    alt={exchangeItem}
+                                    width={20}
+                                    height={20}
+                                    style={{ marginLeft: "5px" }}
+                                  />
+                                )}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <div>
+                            {item.exchange}{" "}
+                            <img
+                              style={{ position: "relative", top: 5 }}
+                              src={CoinImage}
+                              alt="Coins"
+                              width={21}
+                              height={21}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <Button
+                      type="primary"
+                      disabled={!canTrade}
+                      onClick={() => {
+                        handleTradeExchange(profile_id, item.trade_id);
+                      }}
+                      style={{
+                        marginTop: 10,
+                        padding: "5px",
+                        cursor: canTrade ? "pointer" : "not-allowed",
+                      }}
+                    >
+                      {canTrade ? "Trade" : "Cannot Trade"}
+                    </Button>
+                  </div>
+                );
+              })}
           </TabPane>
         </Tabs>
       </Modal>
