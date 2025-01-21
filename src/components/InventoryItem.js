@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Modal, Button } from "antd";
 import { useParams } from "react-router-dom";
 import BreadImage from "../media/inventory/bread.png";
-import CigarettesImage from "../media/inventory/cigarettes.png";
 import PillsImage from "../media/inventory/pills.png";
 import SweetsImage from "../media/inventory/sweets.jpg";
 import CocaineImage from "../media/inventory/cocaine.png";
