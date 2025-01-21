@@ -55,6 +55,11 @@ const InventoryItem = ({ itemName, refreshProfile, hidden = false, profile }) =>
   };
 
   const moveToTrash = async (itemName) => {
+    const isConfirmed = window.confirm(`Are you sure you want to move "${itemName}" to the trash?`);
+
+    if (!isConfirmed) {
+      return; // If the user cancels, do nothing
+    }
     try {
       const endpoint = hidden
         ? `http://${baseURL}:5000/api/profiles/${profile_id}/hidden_stash/${itemName}`
