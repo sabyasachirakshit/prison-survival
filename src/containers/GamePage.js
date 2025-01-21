@@ -9,11 +9,11 @@ import MarketIcon from "../media/market_icon.png";
 import StashIcon from "../media/stash.jpg";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
 import InventoryModal from "../components/Modals/InventoryModal";
-import { Modal, Button, message } from "antd";
+import { Modal, Button, message,Tabs } from "antd";
 import BreadImage from "../media/inventory/bread.png";
 import SweetsImage from "../media/inventory/sweets.jpg";
 import PillsImage from "../media/inventory/pills.png";
-
+const { TabPane } = Tabs;
 function GamePage() {
   const itemImages = {
     Bread: BreadImage,
@@ -167,7 +167,6 @@ function GamePage() {
       await sleep(100); // Add a small delay if needed
       fetchMarketItems();
       refreshProfile();
-      
     } catch (error) {
       console.error("Error purchasing item:", error);
       message.error("An error occurred during the purchase.");
@@ -343,7 +342,6 @@ function GamePage() {
       ) : (
         <p>Profile not available for id {profile_id}</p>
       )}
-
       {/* Inventory Modal */}
       <InventoryModal
         refreshProfile={refreshProfile}
@@ -351,7 +349,6 @@ function GamePage() {
         handleModalClose={handleModalClose}
         profile={profile}
       />
-
       {/* Stash Modal */}
       <InventoryModal
         refreshProfile={refreshProfile}
@@ -360,14 +357,12 @@ function GamePage() {
         profile={profile}
         hidden={true}
       />
-
       {/* Case files Modal */}
       <CaseFilesModal
         caseFilesVisible={caseFilesVisible}
         handleCaseFilesClose={handleCaseFilesClose}
         profile={profile}
       />
-
       {/* Market Modal */}
       <Modal
         title="Market"
@@ -380,52 +375,63 @@ function GamePage() {
           padding: "20px",
         }}
       >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {marketItems.map((item, index) => (
+        <Tabs defaultActiveKey="1">
+          {/* Tab for Market Items */}
+          <TabPane tab="Market Items" key="1">
             <div
-              key={index}
               style={{
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                padding: "10px",
-                textAlign: "center",
-                backgroundColor: "#f9f9f9",
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "10px",
               }}
             >
-              <img
-                src={itemImages[item.name]}
-                alt={item.name}
-                width={50}
-                height={50}
-              />
-              <div>{item.name}</div>
-              <div>
-                Price: {item.price}{" "}
-                <img
-                  style={{ position: "relative", top: 5 }}
-                  src={CoinImage}
-                  alt={item.name}
-                  width={21}
-                  height={21}
-                />
-              </div>
-              <Button
-                type="primary"
-                onClick={() => handleBuyItem(item)}
-                style={{ marginTop: 10, padding: "5px", cursor: "pointer" }}
-              >
-                Buy
-              </Button>
+              {marketItems.map((item, index) => (
+                <div
+                  key={index}
+                  style={{
+                    border: "1px solid #ddd",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    textAlign: "center",
+                    backgroundColor: "#f9f9f9",
+                  }}
+                >
+                  <img
+                    src={itemImages[item.name]}
+                    alt={item.name}
+                    width={50}
+                    height={50}
+                  />
+                  <div>{item.name}</div>
+                  <div>
+                    Price: {item.price}{" "}
+                    <img
+                      style={{ position: "relative", top: 5 }}
+                      src={CoinImage}
+                      alt={item.name}
+                      width={21}
+                      height={21}
+                    />
+                  </div>
+                  <Button
+                    type="primary"
+                    onClick={() => handleBuyItem(item)}
+                    style={{ marginTop: 10, padding: "5px", cursor: "pointer" }}
+                  >
+                    Buy
+                  </Button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </TabPane>
+
+          {/* Tab for Trade Goods */}
+          <TabPane tab="Trade Goods" key="2">
+            trade goods
+          </TabPane>
+        </Tabs>
       </Modal>
+      ;
     </div>
   );
 }
