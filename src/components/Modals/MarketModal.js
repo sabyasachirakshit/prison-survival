@@ -27,10 +27,10 @@ const MarketModal = ({
   setMarketModalVisible,
   marketItems,
   tradeItems,
-  handleTradeExchange,
   profile,
   profile_id,
   hasSufficientItems,
+  fetchTradeItems
 }) => {
   const itemImages = {
     Bread: BreadImage,
@@ -62,7 +62,34 @@ const MarketModal = ({
     }
     return false;
   }
-  
+
+  const handleTradeExchange = async (profile_id, trade_id) => {
+    try {
+      const response = await fetch(
+        `http://${baseURL}:5000/api/trade/${profile_id}/${trade_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.message || "Trade failed");
+        return;
+      }
+
+      // await sleep(100); // Add a small delay if needed
+      fetchTradeItems();
+      refreshProfile();
+    } catch (error) {
+      console.error("Error trading items:", error);
+      alert("An error occurred during the trade.");
+    }
+  };
+
   const handleBuyItem = async (item) => {
     try {
       const response = await fetch(

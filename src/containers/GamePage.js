@@ -167,32 +167,7 @@ function GamePage() {
 
  
 
-  const handleTradeExchange = async (profile_id, trade_id) => {
-    try {
-      const response = await fetch(
-        `http://${baseURL}:5000/api/trade/${profile_id}/${trade_id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = await response.json();
-      if (!response.ok) {
-        alert(data.message || "Trade failed");
-        return;
-      }
-
-      // await sleep(100); // Add a small delay if needed
-      fetchTradeItems();
-      refreshProfile();
-    } catch (error) {
-      console.error("Error trading items:", error);
-      alert("An error occurred during the trade.");
-    }
-  };
+  
 
   return (
     <div
@@ -346,8 +321,8 @@ function GamePage() {
         marketModalVisible={marketModalVisible}
         setMarketModalVisible={setMarketModalVisible}
         marketItems={marketItems}
+        fetchTradeItems={fetchTradeItems}
         tradeItems={tradeItems}
-        handleTradeExchange={handleTradeExchange}
         profile={profile}
         profile_id={profile_id}
         
