@@ -3,14 +3,11 @@ import { useParams } from "react-router-dom";
 import CoinImage from "../media/coin.png";
 import KarmaImage from "../media/karma.png";
 import PrisonImage from "../media/prison/prison.webp";
-import InventoryImage from "../media/inventory.jpg";
-import CaseFilesIcon from "../media/case_files.png";
-import MarketIcon from "../media/market_icon.png";
 import CaseFilesModal from "../components/Modals/CaseFilesModal";
 import InventoryModal from "../components/Modals/InventoryModal";
 import MarketModal from "../components/Modals/MarketModal";
+import LowerComponents from "../components/LowerComponents";
 function GamePage() {
-  
   const { profile_id } = useParams(); // Get profile_id from the URL
   const [profile, setProfile] = useState(null);
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
@@ -108,7 +105,7 @@ function GamePage() {
         if (data.message) {
           console.error(data.message);
         } else {
-          alert("Market has new items")
+          alert("Market has new items");
           setMarketItems(data); // Set the market items in state
         }
       })
@@ -155,7 +152,6 @@ function GamePage() {
     setIsInventoryModalVisible(true); // Show inventory modal
   };
 
-
   const handleCaseFilesClick = () => {
     refreshProfile(); // Refresh profile data
     setCaseFilesVisible(true); // Show case files modal
@@ -164,7 +160,6 @@ function GamePage() {
   const handleModalClose = () => {
     setIsInventoryModalVisible(false); // Hide inventory modal
   };
-
 
   const handleCaseFilesClose = () => {
     setCaseFilesVisible(false); // Hide case files modal
@@ -300,44 +295,11 @@ function GamePage() {
                   <h4>Serve Sentence</h4>
                 </button>
               </div>
-              <div
-                className="lower"
-                style={{ display: "flex", gap: 100, marginTop: 200 }}
-              >
-                <div
-                  className="inventory"
-                  onClick={handleInventoryClick}
-                  style={{ cursor: "pointer" }}
-                >
-                  <img
-                    src={InventoryImage}
-                    alt="Inventory"
-                    width={50}
-                    height={50}
-                  />
-                </div>
-                
-                <div
-                  className="market"
-                  onClick={() => setMarketModalVisible(true)}
-                >
-                  <img
-                    src={MarketIcon}
-                    alt="Market"
-                    width={50}
-                    height={57}
-                    style={{ position: "relative", top: -7 }}
-                  />
-                </div>
-                <div className="case-files" onClick={handleCaseFilesClick}>
-                  <img
-                    src={CaseFilesIcon}
-                    alt="Case Files"
-                    width={50}
-                    height={50}
-                  />
-                </div>
-              </div>
+              <LowerComponents
+                handleInventoryClick={handleInventoryClick}
+                setMarketModalVisible={setMarketModalVisible}
+                handleCaseFilesClick={handleCaseFilesClick}
+              />
             </>
           ) : aftermath ? (
             <div
@@ -406,7 +368,6 @@ function GamePage() {
         handleModalClose={handleModalClose}
         profile={profile}
       />
-
       {/* Case files Modal */}
       <CaseFilesModal
         caseFilesVisible={caseFilesVisible}
