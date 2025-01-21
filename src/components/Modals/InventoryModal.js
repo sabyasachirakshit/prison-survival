@@ -22,15 +22,22 @@ const InventoryModal = ({
       footer={null}
       bodyStyle={{
         maxHeight: "400px", // Limit the height of the modal body
-        overflowY: "auto", // Enable scrolling within the modal
         padding: "20px", // Add padding inside the modal content
       }}
     >
-      <Tabs defaultActiveKey="1">
+      <Tabs
+        defaultActiveKey="1"
+        tabBarStyle={{
+          backgroundColor: "#fff", // Ensure the tab bar is visible with a white background
+          borderBottom: "1px solid #ddd", // Add a bottom border to separate the tabs from the content
+        }}
+      >
         {/* Inventory Tab */}
         <TabPane tab="Inventory" key="1">
           <div
             style={{
+              maxHeight: "300px", // Limit the height of the content area
+              overflowY: "auto", // Enable scrolling within the tab content
               display: "grid",
               gridTemplateColumns: "repeat(2, 1fr)", // 2 columns layout
               gap: "10px", // Space between grid items
@@ -69,6 +76,8 @@ const InventoryModal = ({
         <TabPane tab="Stash" key="2">
           <div
             style={{
+              maxHeight: "300px", // Limit the height of the content area
+              overflowY: "auto", // Enable scrolling within the tab content
               display: "grid",
               gridTemplateColumns: "repeat(2, 1fr)", // 2 columns layout
               gap: "10px", // Space between grid items
