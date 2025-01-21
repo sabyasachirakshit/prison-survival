@@ -159,7 +159,11 @@ function GamePage() {
       );
 
       const data = await response.json();
-      message.success(`${item.name} purchased successfully!`);
+      if (!response.ok) {
+        alert(data.message || "Purchase failed. Insufficient coins.");
+        return;
+      }
+
       await sleep(100); // Add a small delay if needed
       fetchMarketItems();
       refreshProfile();
