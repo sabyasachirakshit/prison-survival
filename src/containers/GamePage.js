@@ -20,7 +20,6 @@ function GamePage() {
   const baseURL = process.env.REACT_APP_LOCAL_IP;
   const [currentScenario, setCurrentScenario] = useState(null);
   const [aftermath, setAftermath] = useState(null);
-  const [allFirstScenarios, setAllFirstScenarios] = useState(null);
 
   useEffect(() => {
     // Fetch profile data from backend
