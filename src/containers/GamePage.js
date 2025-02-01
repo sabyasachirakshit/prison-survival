@@ -18,15 +18,13 @@ function GamePage() {
   const [marketModalVisible, setMarketModalVisible] = useState(false); // State for market modal visibility
   const [tradeItems, setTradeItems] = useState([]); // State for trade items
   const baseURL = process.env.REACT_APP_LOCAL_IP;
-  const [scenarios, setScenarios] = useState([]);
   const [currentScenario, setCurrentScenario] = useState(null);
   const [aftermath, setAftermath] = useState(null);
 
   useEffect(() => {
     fetch("/first_scenario.json")
       .then((res) => res.json())
-      .then((data) => {
-        setScenarios(data);
+      .then((data) => {     
         setCurrentScenario(data[Math.floor(Math.random() * data.length)]);
         console.log(data[Math.floor(Math.random() * data.length)]);
       });
