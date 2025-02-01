@@ -10,6 +10,7 @@ import LowerComponents from "../components/LowerComponents";
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
   const [profile, setProfile] = useState(null);
+  const [newPrisoner,setNewPrisoner]=useState(false);
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
   const [aftermath, setAftermath] = useState(null); // State to show aftermath text
   const [isInventoryModalVisible, setIsInventoryModalVisible] = useState(false); // State for modal visibility
@@ -28,6 +29,10 @@ function GamePage() {
           console.error(data.message);
         } else {
           setProfile(data); // Set the profile data in state
+          if(data.jail_days===0 && data.jail_months===0 && data.jail_years==0){
+            setNewPrisoner(true);
+            console.log("New prisoner");
+          }
         }
       })
       .catch((error) => console.error("Error fetching profile:", error));
@@ -50,7 +55,6 @@ function GamePage() {
         if (data.message) {
           console.error(data.message);
         } else {
-          console.log(data);
           setTradeItems(data);
         }
       })
