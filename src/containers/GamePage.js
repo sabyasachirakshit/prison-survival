@@ -20,15 +20,7 @@ function GamePage() {
   const baseURL = process.env.REACT_APP_LOCAL_IP;
   const [currentScenario, setCurrentScenario] = useState(null);
   const [aftermath, setAftermath] = useState(null);
-
-  useEffect(() => {
-    fetch("/scenarios.json")
-      .then((res) => res.json())
-      .then((data) => {     
-        setCurrentScenario(data[Math.floor(Math.random() * data.length)]);
-        console.log(data[Math.floor(Math.random() * data.length)]);
-      });
-  }, []);
+  const [allFirstScenarios, setAllFirstScenarios] = useState(null);
 
   useEffect(() => {
     // Fetch profile data from backend
@@ -50,6 +42,15 @@ function GamePage() {
         }
       })
       .catch((error) => console.error("Error fetching profile:", error));
+
+    fetch("/scenarios.json")
+      .then((res) => res.json())
+      .then((data) => {
+        if (newPrisoner === true) {
+          data = data.filter((scenario) => scenario.first_scenario);
+        }
+        setCurrentScenario(data[Math.floor(Math.random() * data.length)]);
+      });
 
     // Fetch market items from backend
     fetch(`http://${baseURL}:5000/api/market`)
@@ -73,7 +74,7 @@ function GamePage() {
         }
       })
       .catch((error) => console.error("Error fetching trade items:", error));
-  }, [profile_id, baseURL]);
+  }, [profile_id, baseURL, newPrisoner]);
 
   const refreshProfile = () => {
     // Fetch profile data from backend
@@ -284,7 +285,9 @@ function GamePage() {
               {currentScenario && (
                 <>
                   <h3 style={{ backgroundColor: "white", color: "black" }}>
-                    {currentScenario.scenario}
+                    {newPrisoner
+                      ? currentScenario.first_scenario
+                      : currentScenario.scenario}
                   </h3>
                   <div
                     style={{
