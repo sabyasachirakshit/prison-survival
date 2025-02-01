@@ -1,0 +1,21 @@
+[
+    {
+      "scenario": "You are lost in a dark forest. What do you do?",
+      "options": [
+        { "text": "Climb a tree to get a better view", "aftermath": "You spot a village nearby and find your way out." },
+        { "text": "Follow a river downstream", "aftermath": "You discover a hidden cave with treasure." },
+        { "text": "Stay put and wait for help", "aftermath": "A pack of wolves finds you before help does." },
+        { "text": "Walk in a random direction", "aftermath": "You get even more lost and run out of supplies." }
+      ]
+    },
+    {
+      "scenario": "You find a locked chest in an abandoned house. What do you do?",
+      "options": [
+        { "text": "Try to pick the lock", "aftermath": "You successfully open it and find an old map." },
+        { "text": "Break it open with a rock", "aftermath": "The chest shatters, but the contents are ruined." },
+        { "text": "Leave it alone", "aftermath": "You hear eerie whispers and decide to run away." },
+        { "text": "Look for a key nearby", "aftermath": "You find a skeleton holding a key, but it starts to move!" }
+      ]
+    }
+  ]
+  

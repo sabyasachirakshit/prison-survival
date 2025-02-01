@@ -10,15 +10,27 @@ import LowerComponents from "../components/LowerComponents";
 function GamePage() {
   const { profile_id } = useParams(); // Get profile_id from the URL
   const [profile, setProfile] = useState(null);
-  const [newPrisoner,setNewPrisoner]=useState(false);
+  const [newPrisoner, setNewPrisoner] = useState(false);
   const [showScenario, setShowScenario] = useState(false); // State to toggle scenario UI
-  const [aftermath, setAftermath] = useState(null); // State to show aftermath text
   const [isInventoryModalVisible, setIsInventoryModalVisible] = useState(false); // State for modal visibility
   const [caseFilesVisible, setCaseFilesVisible] = useState(false); // State for case files visibility
   const [marketItems, setMarketItems] = useState([]); // State for market items
   const [marketModalVisible, setMarketModalVisible] = useState(false); // State for market modal visibility
   const [tradeItems, setTradeItems] = useState([]); // State for trade items
   const baseURL = process.env.REACT_APP_LOCAL_IP;
+  const [scenarios, setScenarios] = useState([]);
+  const [currentScenario, setCurrentScenario] = useState(null);
+  const [aftermath, setAftermath] = useState(null);
+
+  useEffect(() => {
+    fetch("/first_scenario.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setScenarios(data);
+        setCurrentScenario(data[Math.floor(Math.random() * data.length)]);
+        console.log(data[Math.floor(Math.random() * data.length)]);
+      });
+  }, []);
 
   useEffect(() => {
     // Fetch profile data from backend
@@ -29,7 +41,11 @@ function GamePage() {
           console.error(data.message);
         } else {
           setProfile(data); // Set the profile data in state
-          if(data.jail_days===0 && data.jail_months===0 && data.jail_years==0){
+          if (
+            data.jail_days === 0 &&
+            data.jail_months === 0 &&
+            data.jail_years === 0
+          ) {
             setNewPrisoner(true);
             console.log("New prisoner");
           }
@@ -134,16 +150,8 @@ function GamePage() {
     setShowScenario(true); // Show the scenario and hide the images
   };
 
-  const handleOptionClick = (option) => {
-    // Handle aftermath based on the option chosen
-    const aftermathMessages = {
-      apologize: "The guard accepts your apology but keeps an eye on you.",
-      bribe: "The guard takes your coins and lets you off the hook.",
-      attack:
-        "You manage to knock out the guard but now have more guards chasing you!",
-      silent: "The guard punishes you, but you stay strong.",
-    };
-    setAftermath(aftermathMessages[option]); // Set aftermath message
+  const handleChoice = (aftermathText) => {
+    setAftermath(aftermathText);
   };
 
   const handleContinue = () => {
@@ -168,10 +176,6 @@ function GamePage() {
   const handleCaseFilesClose = () => {
     setCaseFilesVisible(false); // Hide case files modal
   };
-
- 
-
-  
 
   return (
     <div
@@ -247,9 +251,18 @@ function GamePage() {
           ) : aftermath ? (
             <div
               className="aftermath"
-              style={{ marginTop: 50, textAlign: "center",display:"flex",alignItems:"center",flexDirection:"column",justifyContent:"center"}}
+              style={{
+                marginTop: 50,
+                textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
             >
-              <h3 style={{backgroundColor:"white",width:"50%"}}>{aftermath}</h3>
+              <h3 style={{ backgroundColor: "white", width: "50%" }}>
+                {aftermath}
+              </h3>
               <button
                 style={{ marginTop: 20, padding: "10px", cursor: "pointer" }}
                 onClick={handleContinue}
@@ -260,44 +273,65 @@ function GamePage() {
           ) : (
             <div
               className="scenario"
-              style={{ marginTop: 50, textAlign: "center",display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column" }}
+              style={{
+                marginTop: 50,
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
             >
-              <h3 style={{backgroundColor:"white",color:"black"}}>
-                A guard catches you trying to sneak a note. What do you do?
-              </h3>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                  marginTop: 20,
-                }}
-              >
-                <button
+              sd
+              {currentScenario && (
+                <>
+                  <h3 style={{ backgroundColor: "white", color: "black" }}>
+                    {currentScenario.scenario}
+                  </h3>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                      marginTop: 20,
+                    }}
+                  >
+                    {currentScenario.options.map((option, index) => (
+                      <button
+                        key={index}
+                        className="block w-full p-2 bg-blue-600 hover:bg-blue-700 rounded"
+                        onClick={() => handleChoice(option.aftermath)}
+                      >
+                        {option.text}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+              {/* <button
                   style={{ padding: "10px", cursor: "pointer" }}
                   onClick={() => handleOptionClick("apologize")}
                 >
-                  Apologize and claim it was a misunderstanding
+                  {currentScenario.options[0].text}
                 </button>
                 <button
                   style={{ padding: "10px", cursor: "pointer" }}
                   onClick={() => handleOptionClick("bribe")}
                 >
-                  Bribe the guard with some coins
+                  {currentScenario.options[1].text}
                 </button>
                 <button
                   style={{ padding: "10px", cursor: "pointer" }}
                   onClick={() => handleOptionClick("attack")}
                 >
-                  Attack the guard to escape
+                 {currentScenario.options[2].text}
                 </button>
                 <button
                   style={{ padding: "10px", cursor: "pointer" }}
                   onClick={() => handleOptionClick("silent")}
                 >
-                  Stay silent and accept punishment
-                </button>
-              </div>
+                  {currentScenario.options[3].text}
+                </button> */}
             </div>
           )}
         </div>
@@ -329,7 +363,6 @@ function GamePage() {
         tradeItems={tradeItems}
         profile={profile}
         profile_id={profile_id}
-        
       />
       ;
     </div>
