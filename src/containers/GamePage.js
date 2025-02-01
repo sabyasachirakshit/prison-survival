@@ -22,7 +22,7 @@ function GamePage() {
   const [aftermath, setAftermath] = useState(null);
 
   useEffect(() => {
-    fetch("/first_scenario.json")
+    fetch("/scenarios.json")
       .then((res) => res.json())
       .then((data) => {     
         setCurrentScenario(data[Math.floor(Math.random() * data.length)]);
