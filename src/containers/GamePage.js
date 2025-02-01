@@ -247,9 +247,9 @@ function GamePage() {
           ) : aftermath ? (
             <div
               className="aftermath"
-              style={{ marginTop: 50, textAlign: "center" }}
+              style={{ marginTop: 50, textAlign: "center",display:"flex",alignItems:"center",flexDirection:"column",justifyContent:"center"}}
             >
-              <h3>{aftermath}</h3>
+              <h3 style={{backgroundColor:"white",width:"50%"}}>{aftermath}</h3>
               <button
                 style={{ marginTop: 20, padding: "10px", cursor: "pointer" }}
                 onClick={handleContinue}
@@ -260,9 +260,9 @@ function GamePage() {
           ) : (
             <div
               className="scenario"
-              style={{ marginTop: 50, textAlign: "center" }}
+              style={{ marginTop: 50, textAlign: "center",display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column" }}
             >
-              <h3>
+              <h3 style={{backgroundColor:"white",color:"black"}}>
                 A guard catches you trying to sneak a note. What do you do?
               </h3>
               <div
